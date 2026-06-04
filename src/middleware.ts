@@ -7,7 +7,6 @@ export function middleware(request: NextRequest) {
   // Allowed origins
   const allowedOrigins = [
     process.env.CROSS_ORIGIN,
-    "http://127.0.0.1:3001",
   ].filter(Boolean) as string[];
 
   const isAllowedOrigin = !!origin && allowedOrigins.includes(origin);

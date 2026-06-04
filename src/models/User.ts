@@ -7,6 +7,7 @@ export interface IUser extends Document {
   password?: string; // Optional if you use OAuth providers later
   role: 'superAdmin' | 'admin';
   isEmailVerified: boolean;
+  isBlocked: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -37,9 +38,13 @@ const UserSchema: Schema<IUser> = new Schema(
     role: {
       type: String,
       enum: ['superAdmin', 'admin'],
-      default: 'superAdmin',
+      default: 'admin',
     },
     isEmailVerified: {
+      type: Boolean,
+      default: false,
+    },
+    isBlocked: {
       type: Boolean,
       default: false,
     },

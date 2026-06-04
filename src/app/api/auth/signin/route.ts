@@ -33,14 +33,27 @@ export async function POST(request: Request) {
 
     // Find the user
     const user = await User.findOne({ email });
-    if (!user || !user.password) {
+    if (!user) {
       return NextResponse.json(
         { message: 'Invalid email or password' },
         { status: 401 }
       );
     }
 
+    if (user.isBlocked) {
+      return NextResponse.json(
+        { message: 'Access Denied' },
+        { status: 403 }
+      );
+    }
+
     // Verify the password
+    if (!user.password) {
+      return NextResponse.json(
+        { message: 'Invalid email or password' },
+        { status: 401 }
+      );
+    }
     const isPasswordValid = await bcryptjs.compare(password, user.password);
     if (!isPasswordValid) {
       return NextResponse.json(

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import bcryptjs from 'bcryptjs';
 import dbConnect from '@/lib/dbConnect';
 import User from '@/models/User';
+import Invite from '@/models/Invite';
 import { signUpSchema } from '@/app/api/auth/auth.validation';
 import {
   generateAccessToken,
@@ -40,6 +41,22 @@ export async function POST(request: Request) {
       );
     }
 
+    // Verify invitation exists and is pending
+    const invite = await Invite.findOne({ email });
+    if (!invite) {
+      return NextResponse.json(
+        { message: 'Only invited user can sign up' },
+        { status: 400 }
+      );
+    }
+
+    if (invite.expiresAt < new Date()) {
+      return NextResponse.json(
+        { message: 'Invitation has expired' },
+        { status: 400 }
+      );
+    }
+
     // Hash the password securely
     const hashedPassword = await bcryptjs.hash(password, 12);
 
@@ -49,6 +66,8 @@ export async function POST(request: Request) {
       email,
       password: hashedPassword,
     });
+    // Mark invitation as completed
+    await Invite.updateOne({ _id: invite._id }, { status: 'completed' });
 
     const userObj = newUser.toJSON();
 
