@@ -38,13 +38,14 @@ export const signInSchema = z.object({
 export type SignUpInput = z.infer<typeof signUpSchema>;
 export type SignInInput = z.infer<typeof signInSchema>;
 
-export function generateAccessToken(user: { id: string; name: string; email: string; role: string }) {
+export function generateAccessToken(user: { id: string; name: string; email: string; role: string; profileImage?: string }) {
   return jwt.sign(
     {
       id: user.id,
       name: user.name,
       email: user.email,
       role: user.role,
+      profileImage: user.profileImage,
     },
     ACCESS_TOKEN_SECRET,
     { expiresIn: '15m' } // Short-lived access token

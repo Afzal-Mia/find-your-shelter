@@ -8,6 +8,7 @@ export interface IUser extends Document {
   role: 'superAdmin' | 'admin';
   isEmailVerified: boolean;
   isBlocked: boolean;
+  profileImage?: string; // Optional URL to profile image
   createdAt: Date;
   updatedAt: Date;
 }
@@ -47,6 +48,10 @@ const UserSchema: Schema<IUser> = new Schema(
     isBlocked: {
       type: Boolean,
       default: false,
+    },
+    profileImage: {
+      type: String,
+      required: false,
     },
   },
   {
