@@ -132,8 +132,16 @@ export function verifyRefreshToken(token: string) {
 // Helper to retrieve the authenticated user from the request
 // -------------------------------------------------------------------
 export async function getAuthUser(request: Request) {
-  // Access token is stored in an HTTP‑only cookie named 'accessToken'
-  const token = (request as any).cookies?.get('accessToken')?.value;
+  // Access token is stored in an HTTP‑only cookie named 'accessToken' or sent via Authorization header
+  let token = (request as any).cookies?.get('accessToken')?.value;
+  
+  if (!token) {
+    const authHeader = request.headers.get('authorization') || request.headers.get('Authorization');
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      token = authHeader.split(' ')[1];
+    }
+  }
+
   if (!token) return null;
   try {
     const payload = jwt.verify(token, ACCESS_TOKEN_SECRET) as {
