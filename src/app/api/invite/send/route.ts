@@ -7,6 +7,11 @@ import { getAuthUser } from '@/lib/auth'; // helper returning decoded JWT payloa
 export async function POST(request: Request) {
     try {
         await dbConnect();
+        // Verify requester is superAdmin
+        const authUser = await getAuthUser(request);
+        if (!authUser || authUser.role !== 'superAdmin') {
+            return NextResponse.json({ message: 'Unauthorized' }, { status: 403 });
+        }
         const body = await request.json();
         const result = inviteSchema.safeParse(body);
         if (!result.success) {
@@ -17,11 +22,7 @@ export async function POST(request: Request) {
         }
         const { email } = result.data;
 
-        // Verify requester is superAdmin
-        const authUser = await getAuthUser(request);
-        if (!authUser || authUser.role !== 'superAdmin') {
-            return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
-        }
+
 
         const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 7 days
 

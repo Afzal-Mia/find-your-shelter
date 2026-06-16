@@ -6,16 +6,16 @@ import { getAuthUser } from '@/lib/auth'; // helper returning decoded JWT payloa
 export async function DELETE(request: Request) {
   try {
     await dbConnect();
+    const authUser = await getAuthUser(request);
+    if (!authUser || authUser.role !== 'superAdmin') {
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 403 });
+    }
     const body = await request.json();
     const { email } = body;
     if (!email) {
       return NextResponse.json({ message: 'Email is required' }, { status: 400 });
     }
 
-    const authUser = await getAuthUser(request);
-    if (!authUser || authUser.role !== 'superAdmin') {
-      return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
-    }
 
     // Find the invite first to check its status
     const invite = await Invite.findOne({ email });

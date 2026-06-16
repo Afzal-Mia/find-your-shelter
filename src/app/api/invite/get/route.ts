@@ -8,7 +8,7 @@ export async function GET(request: Request) {
     await dbConnect();
     const authUser = await getAuthUser(request);
     if (!authUser || authUser.role !== 'superAdmin') {
-      return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 403 });
     }
     // Return paginated non‑expired invites
     const { searchParams } = new URL(request.url);
