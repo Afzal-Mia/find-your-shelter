@@ -5,15 +5,17 @@ import { getAuthUser } from '@/lib/auth';
 
 // Unblock a user by setting isBlocked to false
 export async function POST(request: Request) {
+
   try {
-    const { userId } = await request.json();
-    if (!userId) {
-      return NextResponse.json({ message: 'User ID is required' }, { status: 400 });
-    }
     const authUser = await getAuthUser(request);
     if (!authUser || authUser.role !== 'superAdmin') {
       return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
     }
+    const { userId } = await request.json();
+    if (!userId) {
+      return NextResponse.json({ message: 'User ID is required' }, { status: 400 });
+    }
+
     await dbConnect();
     const user = await User.findById(userId);
     if (!user) {

@@ -5,17 +5,19 @@ import { getAuthUser } from '@/lib/auth';
 
 // GET paginated list of admin users (excluding passwords)
 export async function GET(request: Request) {
+
     try {
+        const authUser = await getAuthUser(request);
+        if (!authUser || authUser.role !== 'superAdmin') {
+            return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
+        }
         const { searchParams } = new URL(request.url);
         const page = Number(searchParams.get('page')) || 1;
         const limit = Number(searchParams.get('limit')) || 10;
         const skip = (page - 1) * limit;
 
         await dbConnect();
-        const authUser = await getAuthUser(request);
-        if (!authUser || authUser.role !== 'superAdmin') {
-            return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
-        }
+
         const [admins, total] = await Promise.all([
             User.find({ role: 'admin' })
                 .select('-password')
