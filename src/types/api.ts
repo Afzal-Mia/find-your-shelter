@@ -26,3 +26,6 @@ export interface ReviewListResponse {
     data: Review[];
     pagination: Pagination;
 }
+export interface InquiryResponse {
+    message: string;
+}

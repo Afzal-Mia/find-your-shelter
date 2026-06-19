@@ -266,3 +266,66 @@ export function useReviews(filters: ReviewFilters) {
         queryFn: () => getReviews(filters),
     });
 }
+
+// src/types/inquiry.ts
+
+import { z } from "zod";
+import { inquiryCreateSchema } from "@/app/api/inquiry/inquiry.validation";
+
+export type InquiryFormData = Omit<
+  z.infer<typeof inquiryCreateSchema>,
+  "status"
+>;
+
+//@src/types/api.ts
+export interface InquiryResponse {
+  message: string;
+}
+
+// src/services/inquiry.service.ts
+
+import { api } from "@/lib/api";
+import { InquiryFormData } from "@/types/inquiry";
+import { InquiryResponse } from "@/types/api";
+
+export async function createInquiry(
+  payload: InquiryFormData
+): Promise<InquiryResponse> {
+  const { data } = await api.post<InquiryResponse>(
+    "/inquiry",
+    payload
+  );
+
+  return data;
+}
+
+// src/services/inquiry.service.ts
+
+import { InquiryFormData } from "@/types/inquiry";
+import { InquiryResponse } from "@/types/api";
+import api from "@/lib/api";
+
+export async function createInquiry(
+  payload: InquiryFormData
+): Promise<InquiryResponse> {
+  const { data } = await api.post<InquiryResponse>(
+    "/inquiry",
+    payload
+  );
+
+  return data;
+}
+
+//@scr/hooks/useInquiry.ts
+"use client";
+
+"use client";
+
+import { createInquiry } from "@/services/inquiry.services";
+import { useMutation } from "@tanstack/react-query";
+
+export function useInquiry() {
+    return useMutation({
+        mutationFn: createInquiry,
+    });
+}
