@@ -1,5 +1,6 @@
 // src/types/api.ts
 
+import { Review } from "./review";
 import { Property } from "./property";
 
 export interface Pagination {
@@ -18,4 +19,10 @@ export interface PropertyListResponse {
 
 export interface PropertyResponse {
     property: Property;
+}
+
+
+export interface ReviewListResponse {
+    data: Review[];
+    pagination: Pagination;
 }

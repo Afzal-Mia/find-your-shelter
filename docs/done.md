@@ -208,3 +208,61 @@ export function useProperty(id: string) {
         enabled: !!id,
     });
 }
+////@src/types/review.ts
+import { z } from "zod";
+import { createReviewSchema } from "@/app/api/review/review.validation";
+
+export type Review = Pick<
+    z.infer<typeof createReviewSchema>,
+    "name" | "rating" | "comment"
+> & {
+    _id: string;
+    createdAt: string;
+};
+
+//@types/api.ts
+import { Review } from "./review";
+
+export interface ReviewListResponse {
+  data: Review[];
+  pagination: Pagination;
+}
+
+//@src/services/review.service.ts
+import api from "@/lib/api";
+import { ReviewListResponse } from "@/types/api";
+
+export interface ReviewFilters {
+    page?: number;
+    limit?: number;
+}
+
+export async function getReviews(
+    filters: ReviewFilters
+): Promise<ReviewListResponse> {
+    const { data } = await api.get<ReviewListResponse>("/review/get", {
+        params: {
+            ...filters,
+            status: "approved",
+        },
+    });
+
+    return data;
+}
+
+//added this to @src/constants/queryKeys.ts
+reviews: "reviews",
+
+//@src/hooks/useReviews.ts
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
+import { getReviews, ReviewFilters } from "@/services/review.service";
+import { QUERY_KEYS } from "@/constants/queryKeys";
+
+export function useReviews(filters: ReviewFilters) {
+    return useQuery({
+        queryKey: [QUERY_KEYS.reviews, filters],
+        queryFn: () => getReviews(filters),
+    });
+}
