@@ -5,6 +5,14 @@ const nextConfig: NextConfig = {
   experimental: {
     proxyClientMaxBodySize: 52428800, // 50 MB in bytes
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

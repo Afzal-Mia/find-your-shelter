@@ -61,11 +61,8 @@ export async function PUT(request: Request) {
     }
 
     // 4️⃣ Apply updates (run validators & return the updated doc)
-    const updated = await Property.findByIdAndUpdate(
-      propertyId,
-      { $set: updates },
-      { new: true, runValidators: true }
-    );
+    property.set(updates);
+    const updated = await property.save();
     return NextResponse.json({ property: updated }, { status: 200 });
   } catch (error) {
     console.error('Update property error:', error);

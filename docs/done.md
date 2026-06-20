@@ -329,3 +329,18 @@ export function useInquiry() {
         mutationFn: createInquiry,
     });
 }
+
+// src/components/common/Container.tsx
+// src/components/layout/Logo.tsx
+// src/components/layout/Navbar.tsx
+// src/components/layout/Footer.tsx
+//src/components/common/Heading.tsx
+//define globle.css 
+//src/components/home/Hero.tsx
+//src/components/property/PropertyCard.tsx
+src/components/property/PropertyCardSkeleton.tsx
+src/components/property/PropertyGridkeleton.tsx
+src/components/property/PropertyGrid.tsx
+src/components/common/EmptyState.tsx
+src/components/common/ErrorState.tsx
+src/components/common/SectionHeader.tsx

@@ -1,4 +1,4 @@
-﻿import mongoose, { Schema, Document, Model } from 'mongoose';
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
 export interface IProperty extends Document {
   title: string;
@@ -48,5 +48,19 @@ const propertySchema = new Schema<IProperty>(
   },
   { timestamps: true }
 );
+
+propertySchema.pre('save', async function () {
+  if (this.status === 'fully_booked') {
+    this.totalBookedRooms = this.totalRooms;
+  } else if (this.totalRooms && this.totalBookedRooms === this.totalRooms) {
+    this.status = 'fully_booked';
+  } else if (this.status === 'available') {
+    this.totalBookedRooms = 0;
+  } else if (this.totalBookedRooms === 0) {
+    this.status = 'available';
+  } else if (this.totalBookedRooms !== undefined && this.totalBookedRooms > 0 && this.totalBookedRooms < (this.totalRooms || 0)) {
+    this.status = 'partially_booked';
+  }
+});
 
 export const Property: Model<IProperty> = mongoose.models.Property || mongoose.model<IProperty>('Property', propertySchema);

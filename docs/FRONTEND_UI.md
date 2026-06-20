@@ -20,6 +20,7 @@ The website consumes the following public APIs:
 - Get Property Details
 - Submit Inquiry
 - Submit Review
+- Get Reviews List(no pagination & filters)
 
 The design should be modern, responsive, minimal, and production-ready.
 
@@ -91,7 +92,6 @@ Navbar
 
 Hero Section
 
-Search Section
 
 Featured Properties
 
