@@ -30,7 +30,7 @@ export async function getProperty(
     id: string
 ): Promise<PropertyResponse> {
     const { data } = await api.get<PropertyResponse>(
-        `/property/${id}`
+        `/property/get/${id}`
     );
 
     return data;

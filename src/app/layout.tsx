@@ -6,6 +6,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
 import { Manrope } from "next/font/google";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -33,7 +34,9 @@ export default function RootLayout({
         <QueryProvider>
           <Navbar />
           <Toaster position="top-right" />
-          {children}
+          <TooltipProvider>
+            {children}
+          </TooltipProvider>
           <Footer />
         </QueryProvider>
       </body>

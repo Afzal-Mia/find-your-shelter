@@ -6,13 +6,14 @@ import ErrorState from "@/components/common/ErrorState";
 import SectionHeader from "@/components/common/SectionHeader";
 import PropertyGrid from "@/components/property/PropertyGrid";
 import { useProperties } from "@/hooks/useProperties";
-import PropertyCardSkeleton from "@/components/property/PropertyCardSkeleton";
+import PropertyGridSkeleton from "../property/PropertyGridSkeleton";
 
 export default function FeaturedProperties() {
     const {
         data,
         isLoading,
         isError,
+        refetch
     } = useProperties({
         page: 1,
         limit: 6,
@@ -29,15 +30,12 @@ export default function FeaturedProperties() {
                 />
 
                 {isLoading ? (
-                    <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3">
-                        {Array.from({ length: 10 }).map((_, index) => (
-                            <PropertyCardSkeleton key={index} />
-                        ))}
-                    </div>
+                    <PropertyGridSkeleton />
                 ) : isError ? (
                     <ErrorState
                         title="Failed to Load Properties"
                         description="Something went wrong while loading properties. Please try again."
+                        onRetry={refetch}
                     />
                 ) : !data || data.data.length === 0 ? (
                     <EmptyState

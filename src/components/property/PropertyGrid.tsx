@@ -21,15 +21,6 @@ export default function PropertyGrid({
                     />
                 ))}
             </div>
-
-            <div className="flex justify-center">
-                <Button asChild size="lg" className="rounded-full px-8">
-                    <Link href="/properties">
-                        Explore More Properties
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                </Button>
-            </div>
         </div>
     );
 }

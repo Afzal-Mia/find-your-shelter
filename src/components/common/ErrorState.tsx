@@ -2,15 +2,26 @@
 
 import { Button } from "@/components/ui/button";
 
-interface Props {
+interface ErrorStateProps {
     title: string;
     description: string;
+    onRetry?: () => void;
 }
 
 export default function ErrorState({
     title,
     description,
-}: Props) {
+    onRetry,
+}: ErrorStateProps) {
+    const handleRetry = () => {
+        if (onRetry) {
+            onRetry();
+            return;
+        }
+
+        window.location.reload();
+    };
+
     return (
         <div className="flex flex-col items-center py-20 text-center">
             <h3 className="text-2xl font-semibold">
@@ -21,9 +32,7 @@ export default function ErrorState({
                 {description}
             </p>
 
-            <Button
-                onClick={() => window.location.reload()}
-            >
+            <Button onClick={handleRetry}>
                 Try Again
             </Button>
         </div>

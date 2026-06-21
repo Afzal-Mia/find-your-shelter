@@ -1,196 +1,112 @@
 "use client";
 
-import { useState } from "react";
-import toast from "react-hot-toast";
+import { useInfiniteProperties } from "@/hooks/useInfiniteProperties";
+import { useDebounce } from "@/hooks/useDebounce";
 
-import { useProperties } from "@/hooks/useProperties";
-import { useReviews } from "@/hooks/useReviews";
-import { useInquiry } from "@/hooks/useInquiry";
+import { useState } from "react";
+
+import SearchFilters, {
+    PropertyFilters,
+} from "@/components/property/SearchFilters";
+
+import PropertyGrid from "@/components/property/PropertyGrid";
+import PropertyGridSkeleton from "@/components/property/PropertyGridSkeleton";
+
+import EmptyState from "@/components/common/EmptyState";
+import ErrorState from "@/components/common/ErrorState";
+import LoadMoreButton from "@/components/common/LoadMoreButton";
 
 export default function PropertiesPage() {
-    const { data, isLoading, error } = useProperties({
-        page: 1,
-        limit: 10,
+    const [filters, setFilters] = useState<PropertyFilters>({
+        search: "",
+        type: "all",
+        status: "all",
     });
+
+    const debouncedSearch = useDebounce(filters.search, 500);
 
     const {
-        data: reviewsData,
-        isLoading: reviewsLoading,
-        error: reviewsError,
-    } = useReviews({
-        page: 1,
+        data,
+        isLoading,
+        isError,
+        refetch,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage,
+    } = useInfiniteProperties({
         limit: 10,
+        search: debouncedSearch || undefined,
+        type:
+            filters.type === "all"
+                ? undefined
+                : (filters.type as "flat" | "house" | "villa"),
+        status:
+            filters.status === "all"
+                ? undefined
+                : (filters.status as
+                    | "available"
+                    | "partially_booked"
+                    | "fully_booked"),
     });
 
-    const inquiryMutation = useInquiry();
+    const properties =
+        data?.pages.flatMap((page) => page.data) ?? [];
 
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
-    const [message, setMessage] = useState("");
-
-    if (isLoading || reviewsLoading) {
-        return (
-            <div className="flex h-screen items-center justify-center text-xl">
-                Loading...
-            </div>
-        );
-    }
-
-    if (error || reviewsError) {
-        return (
-            <div className="flex h-screen items-center justify-center text-red-500">
-                Something went wrong.
-            </div>
-        );
-    }
-
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        inquiryMutation.mutate(
-            {
-                propertyId: data?.data[0]?._id,
-                name,
-                email,
-                phone,
-                message,
-            },
-            {
-                onSuccess: (response) => {
-                    toast.success(response.message);
-
-                    setName("");
-                    setEmail("");
-                    setPhone("");
-                    setMessage("");
-                },
-                onError: () => {
-                    toast.error("Failed to submit inquiry");
-                },
-            }
-        );
-    };
+    const total =
+        data?.pages[0]?.pagination.total ?? 0;
 
     return (
-        <div className="min-h-screen bg-slate-100 py-10">
-            <div className="mx-auto max-w-6xl space-y-10">
-
-                {/* Properties */}
-
-                <section className="rounded-xl bg-white p-6 shadow">
-                    <h1 className="mb-6 text-3xl font-bold">
-                        Properties
+        <main className="py-20">
+            <div className="container mx-auto max-w-7xl px-6">
+                {/* Heading */}
+                <div className="mb-10 text-center">
+                    <h1 className="text-4xl font-bold">
+                        Browse Properties
                     </h1>
 
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                        {data?.data.map((property) => (
-                            <div
-                                key={property._id}
-                                className="rounded-lg border p-5"
-                            >
-                                <h2 className="text-xl font-semibold">
-                                    {property.title}
-                                </h2>
+                    <p className="mt-3 text-muted-foreground">
+                        Find verified rental properties that suit your
+                        needs.
+                    </p>
+                </div>
 
-                                <p className="mt-2">
-                                    ₹ {property.rent}
-                                </p>
+                {/* Filters */}
+                <SearchFilters
+                    filters={filters}
+                    onChange={setFilters}
+                />
 
-                                <p className="capitalize text-gray-500">
-                                    {property.type}
-                                </p>
-
-                                <p className="mt-2 rounded bg-green-100 px-2 py-1 inline-block text-sm">
-                                    {property.status}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-
-                {/* Reviews */}
-
-                <section className="rounded-xl bg-white p-6 shadow">
-                    <h2 className="mb-6 text-3xl font-bold">
-                        Reviews
-                    </h2>
-
-                    <div className="grid gap-4 md:grid-cols-2">
-                        {reviewsData?.data.map((review) => (
-                            <div
-                                key={review._id}
-                                className="rounded-lg border p-5"
-                            >
-                                <h3 className="font-semibold">
-                                    {review.name}
-                                </h3>
-
-                                <p className="mt-2 text-yellow-500">
-                                    ⭐ {review.rating}/5
-                                </p>
-
-                                <p className="mt-3 text-gray-600">
-                                    {review.comment}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-
-                {/* Inquiry */}
-
-                <section className="rounded-xl bg-white p-6 shadow">
-                    <h2 className="mb-6 text-3xl font-bold">
-                        Send Inquiry
-                    </h2>
-
-                    <form
-                        onSubmit={handleSubmit}
-                        className="space-y-4"
-                    >
-                        <input
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            placeholder="Name"
-                            className="w-full rounded-lg border p-3 outline-none focus:border-blue-500"
+                {/* Results */}
+                <div className="mt-10">
+                    {isLoading ? (
+                        <PropertyGridSkeleton count={6} />
+                    ) : isError ? (
+                        <ErrorState
+                            title="Failed to load properties"
+                            description="Something went wrong. Please try again."
+                            onRetry={refetch}
                         />
+                    ) : properties.length ? (
+                        <>
 
-                        <input
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Email"
-                            className="w-full rounded-lg border p-3 outline-none focus:border-blue-500"
+                            <PropertyGrid
+                                properties={properties}
+                            />
+
+                            <LoadMoreButton
+                                hasNextPage={!!hasNextPage}
+                                isLoading={isFetchingNextPage}
+                                onLoadMore={() => fetchNextPage()}
+                            />
+                        </>
+                    ) : (
+                        <EmptyState
+                            title="No Properties Found"
+                            description="Try changing your search or filters."
                         />
-
-                        <input
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            placeholder="Phone"
-                            className="w-full rounded-lg border p-3 outline-none focus:border-blue-500"
-                        />
-
-                        <textarea
-                            rows={5}
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                            placeholder="Message"
-                            className="w-full rounded-lg border p-3 outline-none focus:border-blue-500"
-                        />
-
-                        <button
-                            type="submit"
-                            disabled={inquiryMutation.isPending}
-                            className="rounded-lg bg-blue-600 px-6 py-3 text-white transition hover:bg-blue-700 disabled:opacity-50"
-                        >
-                            {inquiryMutation.isPending
-                                ? "Submitting..."
-                                : "Submit Inquiry"}
-                        </button>
-                    </form>
-                </section>
-
+                    )}
+                </div>
             </div>
-        </div>
+        </main>
     );
 }

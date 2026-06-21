@@ -10,7 +10,14 @@ import { QUERY_KEYS } from "@/constants/queryKeys";
 
 export function useProperties(filters: PropertyFilters) {
     return useQuery({
-        queryKey: [QUERY_KEYS.properties, filters],
+        queryKey: [
+            QUERY_KEYS.properties,
+            filters.page,
+            filters.limit,
+            filters.search,
+            filters.type,
+            filters.status,
+        ],
         queryFn: () => getProperties(filters),
     });
 }
