@@ -1,13 +1,10 @@
-"use client";
-
 import {
+    BedDouble,
     Building2,
     Home,
     Landmark,
-    BedDouble,
     IndianRupee,
-    BadgeCheck,
-    DoorOpen,
+    MapPin,
     CheckCircle2,
 } from "lucide-react";
 
@@ -22,131 +19,129 @@ interface Props {
 export default function PropertyInformation({
     property,
 }: Props) {
-    const items = [];
-
-    // Property Type
-    items.push({
-        title: "Property Type",
-        value:
-            property.type.charAt(0).toUpperCase() +
-            property.type.slice(1),
-        icon:
-            property.type === "flat" ? (
-                <Building2 className="h-6 w-6 text-sky-600" />
-            ) : property.type === "villa" ? (
-                <Landmark className="h-6 w-6 text-amber-600" />
-            ) : (
-                <Home className="h-6 w-6 text-emerald-600" />
-            ),
-    });
-
-    // BHK
-    if (property.bhk !== undefined) {
-        items.push({
-            title: "Configuration",
-            value: `${property.bhk} BHK`,
-            icon: (
-                <BedDouble className="h-6 w-6 text-violet-600" />
-            ),
-        });
-    }
-
-    // Rent
-    if (property.rent !== undefined) {
-        items.push({
-            title: "Monthly Rent",
-            value: `₹${property.rent.toLocaleString()}`,
-            icon: (
-                <IndianRupee className="h-6 w-6 text-green-600" />
-            ),
-        });
-    }
-
-    // Status
-    if (property.status) {
-        items.push({
-            title: "Availability",
-            value: property.status
-                .split("_")
-                .map(
-                    (word) =>
-                        word.charAt(0).toUpperCase() +
-                        word.slice(1)
-                )
-                .join(" "),
-            icon: (
-                <BadgeCheck className="h-6 w-6 text-blue-600" />
-            ),
-        });
-    }
-
-    // Room Booking
-    if (property.allowRoomBooking) {
-        items.push({
-            title: "Booking Type",
-            value: "Room-wise Booking",
-            icon: (
-                <DoorOpen className="h-6 w-6 text-orange-600" />
-            ),
-        });
-
-        if (property.totalRooms !== undefined) {
-            items.push({
-                title: "Total Rooms",
-                value: property.totalRooms.toString(),
-                icon: (
-                    <DoorOpen className="h-6 w-6 text-rose-600" />
-                ),
-            });
-        }
-
-        if (property.totalBookedRooms !== undefined) {
-            items.push({
-                title: "Booked Rooms",
-                value: property.totalBookedRooms.toString(),
-                icon: (
-                    <CheckCircle2 className="h-6 w-6 text-emerald-600" />
-                ),
-            });
-        }
-    }
-
     return (
-        <section className="space-y-8">
-            <div>
-                <h2 className="text-3xl font-bold">
-                    Property Information
-                </h2>
+        <Card className="rounded-3xl shadow-sm">
+            <CardContent className="p-8">
 
-                <p className="mt-2 text-muted-foreground">
-                    Quick overview of this property.
-                </p>
+                <div className="mb-8">
+                    <h2 className="text-2xl font-bold">
+                        Property Information
+                    </h2>
+
+                    <p className="mt-2 text-muted-foreground">
+                        Complete information about this property.
+                    </p>
+                </div>
+
+                <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+
+                    {/* Property Type */}
+                    <InfoCard
+                        icon={
+                            property.type === "flat" ? (
+                                <Building2 className="h-6 w-6 text-primary" />
+                            ) : property.type === "villa" ? (
+                                <Landmark className="h-6 w-6 text-primary" />
+                            ) : (
+                                <Home className="h-6 w-6 text-primary" />
+                            )
+                        }
+                        label="Property Type"
+                        value={property.type}
+                    />
+
+                    {/* BHK */}
+                    {property.bhk !== undefined && (
+                        <InfoCard
+                            icon={
+                                <BedDouble className="h-6 w-6 text-primary" />
+                            }
+                            label="Configuration"
+                            value={`${property.bhk} BHK`}
+                        />
+                    )}
+
+                    {/* Rent */}
+                    {property.rent !== undefined && (
+                        <InfoCard
+                            icon={
+                                <IndianRupee className="h-6 w-6 text-primary" />
+                            }
+                            label="Monthly Rent"
+                            value={`₹${property.rent.toLocaleString()}`}
+                        />
+                    )}
+
+                    {/* Booking */}
+                    <InfoCard
+                        icon={
+                            <CheckCircle2 className="h-6 w-6 text-primary" />
+                        }
+                        label="Room Booking"
+                        value={
+                            property.allowRoomBooking
+                                ? "Available"
+                                : "Not Available"
+                        }
+                    />
+
+                    {/* Status */}
+                    {property.status && (
+                        <InfoCard
+                            icon={
+                                <CheckCircle2 className="h-6 w-6 text-primary" />
+                            }
+                            label="Status"
+                            value={property.status
+                                .replaceAll("_", " ")
+                                .replace(/\b\w/g, (l) => l.toUpperCase())}
+                        />
+                    )}
+
+                    {/* Coordinates */}
+                    {property.coordinates && (
+                        <InfoCard
+                            icon={<MapPin className="h-6 w-6 text-primary" />}
+                            label="Coordinates"
+                            value={`${property.coordinates.latitude.toFixed(
+                                4
+                            )}, ${property.coordinates.longitude.toFixed(4)}`}
+                        />
+                    )}
+
+                </div>
+
+            </CardContent>
+        </Card>
+    );
+}
+
+interface InfoCardProps {
+    icon: React.ReactNode;
+    label: string;
+    value: string;
+}
+
+function InfoCard({
+    icon,
+    label,
+    value,
+}: InfoCardProps) {
+    return (
+        <div className="rounded-2xl border bg-muted/30 p-5 transition-all duration-300 hover:border-primary/20 hover:bg-primary/5">
+
+            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+                {icon}
             </div>
 
-            <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-                {items.map((item) => (
-                    <Card
-                        key={item.title}
-                        className="transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
-                    >
-                        <CardContent className="flex items-center gap-4 p-5">
-                            <div className="rounded-xl bg-muted p-3">
-                                {item.icon}
-                            </div>
+            <p className="text-sm text-muted-foreground">
+                {label}
+            </p>
 
-                            <div>
-                                <p className="text-sm text-muted-foreground">
-                                    {item.title}
-                                </p>
+            <h3 className="mt-2 text-lg font-semibold capitalize">
+                {value}
+            </h3>
 
-                                <h3 className="mt-1 font-semibold">
-                                    {item.value}
-                                </h3>
-                            </div>
-                        </CardContent>
-                    </Card>
-                ))}
-            </div>
-        </section>
+        </div>
     );
 }

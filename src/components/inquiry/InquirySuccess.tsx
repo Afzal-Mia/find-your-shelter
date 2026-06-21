@@ -49,12 +49,11 @@ export default function InquirySuccess() {
             </motion.div>
 
             <h2 className="mt-8 text-3xl font-bold">
-                Inquiry Submitted!
+                Thank You!
             </h2>
 
             <p className="mx-auto mt-4 max-w-md leading-7 text-muted-foreground">
-                Thank you for your interest. We've received your inquiry and
-                will contact you as soon as possible.
+                Your inquiry has been submitted successfully. Our team will contact you soon regarding this property.
             </p>
 
             <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">

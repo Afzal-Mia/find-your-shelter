@@ -5,12 +5,20 @@ import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { Property } from "@/types/property";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 interface Props {
     property: Property;
 }
+
+const statusVariant = {
+    available: "default",
+    partially_booked: "secondary",
+    fully_booked: "destructive",
+} as const;
 
 export default function PropertyGallery({
     property,
@@ -18,11 +26,15 @@ export default function PropertyGallery({
     const images =
         property.propertyImages?.length
             ? property.propertyImages
-            : [{ url: "/images/no-image.jpg", publicId: "fallback" }];
+            : [
+                {
+                    url: "/images/no-image.jpg",
+                    publicId: "fallback",
+                },
+            ];
 
     const [emblaRef, emblaApi] = useEmblaCarousel({
         loop: images.length > 1,
-        align: "center",
     });
 
     const [selectedIndex, setSelectedIndex] = useState(0);
@@ -54,12 +66,21 @@ export default function PropertyGallery({
         };
     }, [emblaApi, onSelect]);
 
-    return (
-        <div className="space-y-5">
+    const statusText = property.status
+        ?.split("_")
+        .map(
+            (word) =>
+                word.charAt(0).toUpperCase() +
+                word.slice(1)
+        )
+        .join(" ");
 
-            {/* Carousel */}
+    return (
+        <section className="space-y-5">
+
+            {/* Hero Image */}
             <div
-                className="overflow-hidden rounded-3xl border"
+                className="relative overflow-hidden rounded-3xl border shadow-sm"
                 ref={emblaRef}
             >
                 <div className="flex">
@@ -68,68 +89,83 @@ export default function PropertyGallery({
                             key={image.publicId ?? index}
                             className="relative min-w-0 flex-[0_0_100%]"
                         >
-                            <div className="group relative aspect-[16/10] overflow-hidden bg-muted">
+                            <div className="relative h-[250px] sm:h-[350px] md:h-[450px] lg:h-[550px] overflow-hidden bg-muted">
+
                                 <Image
                                     src={image.url}
-                                    alt={`${property.title} ${index + 1}`}
+                                    alt={property.title}
                                     fill
                                     priority={index === 0}
-                                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                    className="object-cover transition-transform duration-700 hover:scale-105"
                                 />
 
-                                {/* Gradient */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                                {/* Overlay */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
-                                {/* Counter */}
-                                {images.length > 1 && (
-                                    <div className="absolute bottom-5 right-5 rounded-full bg-black/70 px-3 py-1 text-sm font-medium text-white backdrop-blur">
-                                        {selectedIndex + 1} / {images.length}
+                                {/* Status */}
+                                {property.status && (
+                                    <div className="absolute right-6 top-6">
+                                        <Badge
+                                            variant={statusVariant[property.status]}
+                                        >
+                                            {statusText}
+                                        </Badge>
                                     </div>
                                 )}
+
                             </div>
                         </div>
                     ))}
                 </div>
+
+                {/* Floating Buttons */}
+                {images.length > 1 && (
+                    <>
+                        <Button
+                            size="icon"
+                            variant="secondary"
+                            onClick={scrollPrev}
+                            className="absolute left-5 top-1/2 -translate-y-1/2 rounded-full shadow-lg"
+                        >
+                            <ChevronLeft className="h-5 w-5" />
+                        </Button>
+
+                        <Button
+                            size="icon"
+                            variant="secondary"
+                            onClick={scrollNext}
+                            className="absolute right-5 top-1/2 -translate-y-1/2 rounded-full shadow-lg"
+                        >
+                            <ChevronRight className="h-5 w-5" />
+                        </Button>
+                    </>
+                )}
             </div>
 
-            {/* Controls */}
+            {/* Thumbnails */}
             {images.length > 1 && (
-                <div className="flex items-center justify-center gap-6">
+                <div className="flex justify-center gap-3 overflow-x-auto pb-2">
 
-                    <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={scrollPrev}
-                        className="rounded-full"
-                    >
-                        <ChevronLeft className="h-5 w-5" />
-                    </Button>
-
-                    {/* Dots */}
-                    <div className="flex gap-2">
-                        {images.map((_, index) => (
-                            <button
-                                key={index}
-                                onClick={() => emblaApi?.scrollTo(index)}
-                                className={`h-2.5 rounded-full transition-all duration-300 ${selectedIndex === index
-                                    ? "w-8 bg-primary"
-                                    : "w-2.5 bg-muted-foreground/30"
-                                    }`}
+                    {images.map((image, index) => (
+                        <button
+                            key={image.publicId}
+                            onClick={() => emblaApi?.scrollTo(index)}
+                            className={`relative h-20 w-28 shrink-0 overflow-hidden rounded-xl border-2 transition-all ${selectedIndex === index
+                                    ? "border-primary"
+                                    : "border-transparent opacity-70 hover:opacity-100"
+                                }`}
+                        >
+                            <Image
+                                src={image.url}
+                                alt=""
+                                fill
+                                className="object-cover"
                             />
-                        ))}
-                    </div>
-
-                    <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={scrollNext}
-                        className="rounded-full"
-                    >
-                        <ChevronRight className="h-5 w-5" />
-                    </Button>
+                        </button>
+                    ))}
 
                 </div>
             )}
-        </div>
+        </section>
     );
 }

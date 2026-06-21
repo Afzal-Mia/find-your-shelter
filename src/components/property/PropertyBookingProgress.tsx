@@ -1,7 +1,8 @@
+import { BedDouble, CheckCircle2, XCircle } from "lucide-react";
+
 import { Property } from "@/types/property";
+
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { BedDouble, CheckCircle2 } from "lucide-react";
 
 interface Props {
     property: Property;
@@ -13,96 +14,185 @@ export default function PropertyBookingProgress({
     const booked = property.totalBookedRooms ?? 0;
     const total = property.totalRooms ?? 0;
 
-    const percentage =
-        total === 0 ? 0 : Math.min((booked / total) * 100, 100);
+    const available = Math.max(total - booked, 0);
 
-    const full = booked >= total;
+    const percentage =
+        total === 0
+            ? 0
+            : Math.min((booked / total) * 100, 100);
+
+    const isFullyBooked =
+        property.status === "fully_booked";
 
     return (
-        <Card className="rounded-3xl shadow-sm">
-            <CardContent className="space-y-6 p-6">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h2 className="text-xl font-semibold">
-                            Room Booking Progress
-                        </h2>
+        <Card className="overflow-hidden rounded-3xl border-0 shadow-sm">
 
-                        <p className="mt-1 text-sm text-muted-foreground">
-                            Current room availability for this property.
-                        </p>
-                    </div>
+            <CardContent className="p-8">
 
-                    <Badge variant={full ? "destructive" : "default"}>
-                        {full ? "Fully Booked" : "Available"}
-                    </Badge>
+                {/* Heading */}
+
+                <div className="mb-8">
+
+                    <h2 className="text-2xl font-bold">
+                        Room-wise Booking
+                    </h2>
+
+                    <p className="mt-2 text-muted-foreground">
+                        Current booking status of all rooms in this property.
+                    </p>
+
                 </div>
 
-                <div className="rounded-2xl border bg-muted/30 p-5">
-                    <div className="mb-4 flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                            <BedDouble className="h-5 w-5 text-primary" />
+                {/* Booking Card */}
 
-                            <span className="font-medium">
-                                Rooms Booked
-                            </span>
+                <div
+                    className={`rounded-3xl border p-6 transition-colors ${isFullyBooked
+                        ? "border-destructive/10 bg-destructive/5"
+                        : "border-primary/10 bg-primary/5"
+                        }`}
+                >
+                    {/* Top */}
+
+                    <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+
+                        <div className="flex items-center gap-3">
+
+                            <div
+                                className={`rounded-xl p-3 ${isFullyBooked
+                                    ? "bg-destructive/10"
+                                    : "bg-primary/10"
+                                    }`}
+                            >
+                                <BedDouble
+                                    className={`h-6 w-6 ${isFullyBooked
+                                        ? "text-destructive"
+                                        : "text-primary"
+                                        }`}
+                                />
+                            </div>
+
+                            <div>
+
+                                <h3 className="text-lg font-semibold">
+                                    Room Booking Status
+                                </h3>
+
+                                <p className="text-sm text-muted-foreground">
+                                    Live occupancy information
+                                </p>
+
+                            </div>
+
                         </div>
 
-                        <span className="text-lg font-semibold">
-                            {booked} / {total}
-                        </span>
-                    </div>
-
-                    <div className="h-3 overflow-hidden rounded-full bg-muted">
                         <div
-                            className={`h-full transition-all duration-500 ${full ? "bg-destructive" : "bg-primary"
+                            className={`rounded-full px-4 py-2 text-sm font-semibold ${isFullyBooked
+                                ? "bg-destructive/10 text-destructive"
+                                : "bg-primary/10 text-primary"
                                 }`}
-                            style={{
-                                width: `${percentage}%`,
-                            }}
-                        />
+                        >
+                            {Math.round(percentage)}% Occupied
+                        </div>
+
                     </div>
 
-                    <div className="mt-5 grid grid-cols-3 gap-4 text-center">
-                        <div className="rounded-xl bg-background p-4">
-                            <p className="text-2xl font-bold">
-                                {total}
-                            </p>
+                    {/* Progress */}
+
+                    <div className="mt-8">
+
+                        <div
+                            className={`h-4 overflow-hidden rounded-full ${isFullyBooked
+                                ? "bg-destructive/10"
+                                : "bg-primary/10"
+                                }`}
+                        >
+                            <div
+                                className={`h-full rounded-full transition-all duration-500 ${isFullyBooked
+                                    ? "bg-destructive"
+                                    : "bg-primary"
+                                    }`}
+                                style={{
+                                    width: `${percentage}%`,
+                                }}
+                            />
+                        </div>
+
+                    </div>
+
+                    {/* Stats */}
+
+                    <div className="mt-8 grid gap-4 md:grid-cols-3">
+
+                        <div className="rounded-2xl border bg-background p-5">
 
                             <p className="text-sm text-muted-foreground">
                                 Total Rooms
                             </p>
+
+                            <p className="mt-2 text-3xl font-bold">
+                                {total}
+                            </p>
+
                         </div>
 
-                        <div className="rounded-xl bg-background p-4">
-                            <p className="text-2xl font-bold text-primary">
+                        <div className="rounded-2xl border bg-background p-5">
+
+                            <p className="text-sm text-muted-foreground">
+                                Rooms Booked
+                            </p>
+
+                            <p
+                                className={`mt-2 text-3xl font-bold ${isFullyBooked
+                                    ? "text-destructive"
+                                    : "text-primary"
+                                    }`}
+                            >
                                 {booked}
                             </p>
 
-                            <p className="text-sm text-muted-foreground">
-                                Booked
-                            </p>
                         </div>
 
-                        <div className="rounded-xl bg-background p-4">
-                            <p className="text-2xl font-bold text-green-600">
-                                {Math.max(total - booked, 0)}
-                            </p>
+                        <div className="rounded-2xl border bg-background p-5">
 
                             <p className="text-sm text-muted-foreground">
-                                Available
+                                Rooms Available
                             </p>
+
+                            <p className="mt-2 text-3xl font-bold text-green-600">
+                                {available}
+                            </p>
+
                         </div>
+
                     </div>
 
-                    {!full && (
-                        <div className="mt-5 flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 p-3 text-sm text-primary">
-                            <CheckCircle2 className="h-4 w-4" />
+                    {/* Bottom Message */}
 
-                            Rooms are currently available for booking.
-                        </div>
-                    )}
+                    <div
+                        className={`mt-8 flex items-center gap-3 rounded-2xl border p-4 ${isFullyBooked
+                            ? "border-destructive/10 bg-destructive/5 text-destructive"
+                            : "border-primary/10 bg-primary/5 text-primary"
+                            }`}
+                    >
+                        {isFullyBooked ? (
+                            <XCircle className="h-5 w-5 shrink-0" />
+                        ) : (
+                            <CheckCircle2 className="h-5 w-5 shrink-0" />
+                        )}
+
+                        <span className="font-medium">
+                            {isFullyBooked
+                                ? "All rooms are currently booked."
+                                : `${available} room${available === 1 ? "" : "s"
+                                } available for booking.`}
+                        </span>
+
+                    </div>
+
                 </div>
+
             </CardContent>
+
         </Card>
     );
 }

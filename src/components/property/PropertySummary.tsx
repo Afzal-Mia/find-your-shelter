@@ -1,19 +1,13 @@
-"use client";
-
 import {
-    BadgeCheck,
     BedDouble,
     Building2,
     Home,
     Landmark,
-    IndianRupee,
-    ArrowDown,
 } from "lucide-react";
 
 import { Property } from "@/types/property";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 
 interface Props {
     property: Property;
@@ -28,75 +22,78 @@ const statusVariant = {
 export default function PropertySummary({
     property,
 }: Props) {
-    const statusText =
-        property.status
-            ?.split("_")
-            .map(
-                (word) =>
-                    word.charAt(0).toUpperCase() +
-                    word.slice(1)
-            )
-            .join(" ");
-
-    const bookingPercent =
-        property.allowRoomBooking &&
-            property.totalRooms &&
-            property.totalRooms > 0
-            ? Math.min(
-                ((property.totalBookedRooms ?? 0) /
-                    property.totalRooms) *
-                100,
-                100
-            )
-            : 0;
+    const statusText = property.status
+        ?.split("_")
+        .map(
+            (word) =>
+                word.charAt(0).toUpperCase() +
+                word.slice(1)
+        )
+        .join(" ");
 
     return (
-        <aside className="sticky top-24 rounded-3xl border bg-card p-6 shadow-lg">
+        <section className="mt-8 rounded-3xl border bg-card p-8 shadow-sm">
 
-            {/* Title */}
+            {/* Top */}
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
 
-            <h1 className="text-3xl font-bold leading-tight">
-                {property.title}
-            </h1>
+                <div className="space-y-4">
 
-            {/* Status */}
+                    <div className="flex flex-wrap items-center gap-3">
 
-            {property.status && (
-                <Badge
-                    className="mt-4"
-                    variant={statusVariant[property.status]}
-                >
-                    <BadgeCheck className="mr-1 h-4 w-4" />
-                    {statusText}
-                </Badge>
-            )}
+                        <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
+                            {property.title}
+                        </h1>
 
-            {/* Rent */}
+                        {property.status && (
+                            <Badge variant={statusVariant[property.status]}>
+                                {statusText}
+                            </Badge>
+                        )}
 
-            {property.rent !== undefined && (
-                <div className="mt-8 rounded-2xl border bg-primary/5 p-5">
+                    </div>
 
-                    <p className="text-sm text-muted-foreground">
-                        Monthly Rent
-                    </p>
+                    {property.description && (
+                        <p className="max-w-3xl text-muted-foreground leading-7">
+                            {property.description}
+                        </p>
+                    )}
 
-                    <div className="mt-2 flex items-center">
+                </div>
 
-                        <IndianRupee className="mr-1 h-7 w-7 text-primary" />
+                {property.rent !== undefined && (
+                    <div className="rounded-2xl border bg-primary/5 px-6 py-5 text-center">
 
-                        <span className="text-4xl font-bold text-primary">
-                            {property.rent.toLocaleString()}
+                        <p className="text-sm text-muted-foreground">
+                            Monthly Rent
+                        </p>
+
+                        <p className="mt-1 text-4xl font-bold text-primary">
+                            ₹{property.rent.toLocaleString()}
+                        </p>
+
+                    </div>
+                )}
+
+            </div>
+
+            {/* Features */}
+
+            <div className="mt-8 flex flex-wrap gap-4">
+
+                {property.bhk && (
+                    <div className="flex items-center gap-2 rounded-xl border bg-muted/40 px-5 py-3">
+
+                        <BedDouble className="h-5 w-5 text-primary" />
+
+                        <span className="font-medium">
+                            {property.bhk} BHK
                         </span>
 
                     </div>
-                </div>
-            )}
+                )}
 
-            {/* Quick Info */}
-
-            <div className="mt-8 space-y-4">
-
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 rounded-xl border bg-muted/40 px-5 py-3">
 
                     {property.type === "flat" ? (
                         <Building2 className="h-5 w-5 text-primary" />
@@ -112,70 +109,17 @@ export default function PropertySummary({
 
                 </div>
 
-                {property.bhk !== undefined && (
-                    <div className="flex items-center gap-3">
-
-                        <BedDouble className="h-5 w-5 text-primary" />
-
-                        <span className="font-medium">
-                            {property.bhk} BHK
-                        </span>
-
-                    </div>
+                {property.allowRoomBooking && (
+                    <Badge
+                        variant="outline"
+                        className="rounded-xl px-5 py-3 text-sm"
+                    >
+                        Room-wise Booking Available
+                    </Badge>
                 )}
 
             </div>
 
-            {/* Booking */}
-
-            {property.allowRoomBooking && (
-                <div className="mt-8 rounded-2xl border bg-muted/30 p-5">
-
-                    <div className="mb-3 flex items-center justify-between">
-
-                        <span className="font-medium">
-                            Room Booking
-                        </span>
-
-                        <span className="text-sm text-muted-foreground">
-                            {property.totalBookedRooms ?? 0} /{" "}
-                            {property.totalRooms ?? 0}
-                        </span>
-
-                    </div>
-
-                    <div className="h-2 overflow-hidden rounded-full bg-muted">
-
-                        <div
-                            className="h-full rounded-full bg-primary transition-all duration-700"
-                            style={{
-                                width: `${bookingPercent}%`,
-                            }}
-                        />
-
-                    </div>
-
-                </div>
-            )}
-
-            {/* CTA */}
-
-            <Button
-                className="mt-8 w-full rounded-xl"
-                size="lg"
-                onClick={() =>
-                    document
-                        .getElementById("inquiry-form")
-                        ?.scrollIntoView({
-                            behavior: "smooth",
-                        })
-                }
-            >
-                Submit Inquiry
-
-                <ArrowDown className="ml-2 h-4 w-4" />
-            </Button>
-
-        </aside>
+        </section>
     );
 }

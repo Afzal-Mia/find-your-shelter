@@ -7,5 +7,4 @@ export type Review = Pick<
     "name" | "rating" | "comment"
 > & {
     _id: string;
-    createdAt: string;
 };

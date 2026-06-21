@@ -3,10 +3,19 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { inquiryCreateSchema } from "@/app/api/inquiry/inquiry.validation";
+import toast from "react-hot-toast";
+
+import {
+    Loader2,
+    Send,
+    CheckCircle2,
+    Phone,
+    ShieldCheck,
+    Clock3,
+} from "lucide-react";
+
 import { InquiryFormData } from "@/types/inquiry";
 import { useInquiry } from "@/hooks/useInquiry";
-import toast from "react-hot-toast";
 
 import InquirySuccess from "./InquirySuccess";
 
@@ -14,14 +23,15 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-
-import { Loader2, Send } from "lucide-react";
+import { inquiryCreateSchema } from "@/app/api/inquiry/inquiry.validation";
 
 interface Props {
     propertyId: string;
 }
 
-export default function InquiryForm({ propertyId }: Props) {
+export default function InquiryForm({
+    propertyId,
+}: Props) {
     const [submitted, setSubmitted] = useState(false);
 
     const mutation = useInquiry();
@@ -42,7 +52,7 @@ export default function InquiryForm({ propertyId }: Props) {
         },
     });
 
-    const onSubmit = (values: InquiryFormData) => {
+    function onSubmit(values: InquiryFormData) {
         mutation.mutate(values, {
             onSuccess: (data) => {
                 toast.success(data.message);
@@ -65,115 +75,225 @@ export default function InquiryForm({ propertyId }: Props) {
                 );
             },
         });
-    };
+    }
 
     if (submitted) {
         return <InquirySuccess />;
     }
 
     return (
-        <div className="rounded-3xl border bg-card p-8 shadow-sm">
-            <div className="mb-8">
-                <h2 className="text-2xl font-bold">
-                    Interested in this property?
-                </h2>
+        <section className="overflow-hidden rounded-3xl border bg-card shadow-sm">
 
-                <p className="mt-2 text-muted-foreground">
-                    Fill out the form below and we'll get back to you shortly.
-                </p>
+            <div className="grid lg:grid-cols-2">
+
+                {/* LEFT */}
+
+                <div className="bg-primary/5 p-10">
+
+                    <div className="max-w-md">
+
+                        <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
+                            <Phone className="h-7 w-7 text-primary" />
+                        </div>
+
+                        <h2 className="text-3xl font-bold">
+                            Interested in this property?
+                        </h2>
+
+                        <p className="mt-4 leading-7 text-muted-foreground">
+                            Fill in your details and our team will
+                            contact you shortly to answer your
+                            questions or schedule a property visit.
+                        </p>
+
+                        <div className="mt-10 space-y-5">
+
+                            <Feature
+                                icon={<Clock3 className="h-5 w-5" />}
+                                title="Quick Response"
+                                description="We usually respond within 24 hours."
+                            />
+
+                            <Feature
+                                icon={<ShieldCheck className="h-5 w-5" />}
+                                title="Trusted Assistance"
+                                description="Our team will guide you through every step."
+                            />
+
+                            <Feature
+                                icon={<CheckCircle2 className="h-5 w-5" />}
+                                title="Schedule a Visit"
+                                description="Book a property visit at your convenience."
+                            />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {/* RIGHT */}
+
+                <div className="p-10">
+
+                    <h3 className="text-2xl font-semibold">
+                        Send Inquiry
+                    </h3>
+
+                    <p className="mt-2 text-muted-foreground">
+                        Complete the form below.
+                    </p>
+
+                    <form
+                        onSubmit={handleSubmit(onSubmit)}
+                        className="mt-8 space-y-6"
+                    >
+
+                        <div className="space-y-2">
+
+                            <Label htmlFor="name">
+                                Full Name
+                            </Label>
+
+                            <Input
+                                id="name"
+                                placeholder="John Doe"
+                                {...register("name")}
+                            />
+
+                            {errors.name && (
+                                <p className="text-sm text-destructive">
+                                    {errors.name.message}
+                                </p>
+                            )}
+
+                        </div>
+
+                        <div className="grid gap-6 md:grid-cols-2">
+
+                            <div className="space-y-2">
+
+                                <Label htmlFor="email">
+                                    Email
+                                </Label>
+
+                                <Input
+                                    id="email"
+                                    type="email"
+                                    placeholder="john@example.com"
+                                    {...register("email")}
+                                />
+
+                                {errors.email && (
+                                    <p className="text-sm text-destructive">
+                                        {errors.email.message}
+                                    </p>
+                                )}
+
+                            </div>
+
+                            <div className="space-y-2">
+
+                                <Label htmlFor="phone">
+                                    Phone Number
+                                </Label>
+
+                                <Input
+                                    id="phone"
+                                    placeholder="+91 9876543210"
+                                    {...register("phone")}
+                                />
+
+                                {errors.phone && (
+                                    <p className="text-sm text-destructive">
+                                        {errors.phone.message}
+                                    </p>
+                                )}
+
+                            </div>
+
+                        </div>
+
+                        <div className="space-y-2">
+
+                            <Label htmlFor="message">
+                                Message
+                            </Label>
+
+                            <Textarea
+                                id="message"
+                                rows={6}
+                                placeholder="I'm interested in this property. Please contact me."
+                                {...register("message")}
+                            />
+
+                            {errors.message && (
+                                <p className="text-sm text-destructive">
+                                    {errors.message.message}
+                                </p>
+                            )}
+
+                        </div>
+
+                        <Button
+                            type="submit"
+                            size="lg"
+                            className="w-full"
+                            disabled={mutation.isPending}
+                        >
+                            {mutation.isPending ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Sending Inquiry...
+                                </>
+                            ) : (
+                                <>
+                                    <Send className="mr-2 h-4 w-4" />
+                                    Send Inquiry
+                                </>
+                            )}
+                        </Button>
+
+                    </form>
+
+                </div>
+
             </div>
 
-            <form
-                onSubmit={handleSubmit(onSubmit)}
-                className="space-y-6"
-            >
-                <div className="space-y-2">
-                    <Label htmlFor="name">Full Name</Label>
+        </section>
+    );
+}
 
-                    <Input
-                        id="name"
-                        placeholder="John Doe"
-                        {...register("name")}
-                    />
+interface FeatureProps {
+    icon: React.ReactNode;
+    title: string;
+    description: string;
+}
 
-                    {errors.name && (
-                        <p className="text-sm text-destructive">
-                            {errors.name.message}
-                        </p>
-                    )}
-                </div>
+function Feature({
+    icon,
+    title,
+    description,
+}: FeatureProps) {
+    return (
+        <div className="flex gap-4">
 
-                <div className="grid gap-6 md:grid-cols-2">
-                    <div className="space-y-2">
-                        <Label htmlFor="email">Email</Label>
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                {icon}
+            </div>
 
-                        <Input
-                            id="email"
-                            type="email"
-                            placeholder="john@example.com"
-                            {...register("email")}
-                        />
+            <div>
 
-                        {errors.email && (
-                            <p className="text-sm text-destructive">
-                                {errors.email.message}
-                            </p>
-                        )}
-                    </div>
+                <h4 className="font-semibold">
+                    {title}
+                </h4>
 
-                    <div className="space-y-2">
-                        <Label htmlFor="phone">Phone Number</Label>
+                <p className="mt-1 text-sm text-muted-foreground">
+                    {description}
+                </p>
 
-                        <Input
-                            id="phone"
-                            placeholder="+91 9876543210"
-                            {...register("phone")}
-                        />
+            </div>
 
-                        {errors.phone && (
-                            <p className="text-sm text-destructive">
-                                {errors.phone.message}
-                            </p>
-                        )}
-                    </div>
-                </div>
-
-                <div className="space-y-2">
-                    <Label htmlFor="message">Message</Label>
-
-                    <Textarea
-                        id="message"
-                        rows={5}
-                        placeholder="I'm interested in this property. Please contact me."
-                        {...register("message")}
-                    />
-
-                    {errors.message && (
-                        <p className="text-sm text-destructive">
-                            {errors.message.message}
-                        </p>
-                    )}
-                </div>
-
-                <Button
-                    type="submit"
-                    size="lg"
-                    className="w-full"
-                    disabled={mutation.isPending}
-                >
-                    {mutation.isPending ? (
-                        <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Sending Inquiry...
-                        </>
-                    ) : (
-                        <>
-                            <Send className="mr-2 h-4 w-4" />
-                            Submit Inquiry
-                        </>
-                    )}
-                </Button>
-            </form>
         </div>
     );
 }

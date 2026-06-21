@@ -1,6 +1,10 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import { SearchX } from "lucide-react";
+
+import { useProperty } from "@/hooks/useProperty";
+import BackButton from "@/components/common/BackButton";
 
 import PropertyGallery from "@/components/property/PropertyGallery";
 import PropertySummary from "@/components/property/PropertySummary";
@@ -9,14 +13,11 @@ import PropertyInformation from "@/components/property/PropertyInformation";
 import PropertyLocation from "@/components/property/PropertyLocation";
 import PropertyBookingProgress from "@/components/property/PropertyBookingProgress";
 import PropertyDetailSkeleton from "@/components/property/PropertyDetailSkeleton";
+
 import InquiryForm from "@/components/inquiry/InquiryForm";
 
 import EmptyState from "@/components/common/EmptyState";
 import ErrorState from "@/components/common/ErrorState";
-
-import { useProperty } from "@/hooks/useProperty";
-
-import { SearchX } from "lucide-react";
 
 export default function PropertyDetailsPage() {
     const params = useParams();
@@ -61,43 +62,49 @@ export default function PropertyDetailsPage() {
     const property = data.property;
 
     return (
-        <main className="py-16">
-            <div className="container mx-auto max-w-7xl px-6">
-                {/* Top Section */}
-                <div className="grid gap-10 lg:grid-cols-3">
-                    <div className="lg:col-span-2">
-                        <PropertyGallery property={property} />
-                    </div>
+        <main className="pb-20">
 
-                    {/* <div>
-                        <PropertySummary property={property} />
-                    </div> */}
-                </div>
+            {/* Hero Gallery */}
+            <section className="container mx-auto max-w-7xl px-6 pt-10">
+                <BackButton label="Back to Properties" />
 
-                <div className="mt-14">
-                    <PropertyDescription property={property} />
-                </div>
+                <PropertyGallery property={property} />
+            </section>
 
-                <div className="mt-10">
-                    <PropertyInformation property={property} />
-                </div>
+            {/* Summary */}
+            <section className="container mx-auto max-w-7xl px-6">
+                <PropertySummary property={property} />
+            </section>
 
-                {property.allowRoomBooking && (
-                    <div className="mt-10">
-                        <PropertyBookingProgress property={property} />
-                    </div>
-                )}
+            {/* Booking Progress */}
+            {property.allowRoomBooking && (
+                <section className="container mx-auto mt-10 max-w-7xl px-6">
+                    <PropertyBookingProgress property={property} />
+                </section>
+            )}
 
-                {property.coordinates && (
-                    <div className="mt-10">
-                        <PropertyLocation property={property} />
-                    </div>
-                )}
+            {/* Description */}
+            <section className="container mx-auto mt-10 max-w-7xl px-6">
+                <PropertyDescription property={property} />
+            </section>
 
-                <div className="mt-14">
-                    <InquiryForm propertyId={property._id} />
-                </div>
-            </div>
+            {/* Information */}
+            <section className="container mx-auto mt-10 max-w-7xl px-6">
+                <PropertyInformation property={property} />
+            </section>
+
+            {/* Location */}
+            {property.coordinates && (
+                <section className="container mx-auto mt-10 max-w-7xl px-6">
+                    <PropertyLocation property={property} />
+                </section>
+            )}
+
+            {/* Inquiry */}
+            <section className="container mx-auto mt-14 max-w-7xl px-6">
+                <InquiryForm propertyId={property._id} />
+            </section>
+
         </main>
     );
 }
