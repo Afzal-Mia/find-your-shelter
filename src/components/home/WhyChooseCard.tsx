@@ -19,27 +19,27 @@ export default function WhyChooseCard({
     iconColor,
 }: WhyChooseCardProps) {
     return (
-        <Card className="group h-full border-border/60 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-            <CardContent className="flex flex-col items-center p-8 text-center">
+        <Card className="group h-full rounded-2xl border-border/60 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl sm:rounded-3xl">
+            <CardContent className="flex flex-col items-center p-5 text-center sm:p-6 lg:p-8">
                 <div
                     className={cn(
-                        "mb-6 flex h-16 w-16 items-center justify-center rounded-2xl transition-all duration-500 group-hover:scale-110 group-hover:rotate-6",
+                        "mb-4 flex h-14 w-14 items-center justify-center rounded-xl transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 sm:mb-5 sm:h-16 sm:w-16 sm:rounded-2xl",
                         iconBg
                     )}
                 >
                     <Icon
                         className={cn(
-                            "h-8 w-8 transition-transform duration-500",
+                            "h-7 w-7 transition-transform duration-500 sm:h-8 sm:w-8",
                             iconColor
                         )}
                     />
                 </div>
 
-                <h3 className="mb-3 text-xl font-semibold text-foreground">
+                <h3 className="mb-2 text-lg font-semibold text-foreground sm:mb-3 sm:text-xl">
                     {title}
                 </h3>
 
-                <p className="text-sm leading-7 text-muted-foreground">
+                <p className="text-sm leading-6 text-muted-foreground sm:leading-7">
                     {description}
                 </p>
             </CardContent>

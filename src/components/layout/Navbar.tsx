@@ -76,17 +76,15 @@ export default function Navbar() {
                 "sticky top-0 z-50 w-full transition-all duration-300",
                 scrolled
                     ? "border-b border-border bg-background/80 shadow-sm backdrop-blur-xl"
-                    : "bg-transparent"
+                    : "bg-background/70 backdrop-blur-md"
             )}
         >
-            <Container className="flex h-20 items-center justify-between">
-                {/* Logo */}
+            <Container className="flex h-16 items-center justify-between sm:h-[72px] lg:h-20">
                 <Logo />
 
-                {/* Right Side */}
-                <div className="flex items-center gap-8">
+                <div className="flex items-center gap-3 sm:gap-5 lg:gap-8">
                     {/* Desktop Navigation */}
-                    <nav className="hidden items-center gap-8 lg:flex">
+                    <nav className="hidden items-center gap-6 lg:flex xl:gap-8">
                         {navLinks.map((item) => {
                             const isActive =
                                 item.href === "/"
@@ -123,27 +121,27 @@ export default function Navbar() {
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                className="lg:hidden"
+                                className="h-10 w-10 rounded-xl lg:hidden"
                                 aria-label="Open Menu"
                             >
-                                <Menu className="h-6 w-6" />
+                                <Menu className="h-5 w-5" />
                             </Button>
                         </SheetTrigger>
 
                         <SheetContent
                             side="right"
-                            className="flex w-[320px] flex-col p-0"
+                            className="flex w-[85vw] max-w-[320px] flex-col !bg-white !text-black p-0"
                         >
                             {/* Header */}
-                            <SheetHeader className="border-b px-6 py-6">
+                            <SheetHeader className="border-b bg-white px-5 py-5 sm:px-6 sm:py-6">
                                 <SheetTitle>
                                     <Logo />
                                 </SheetTitle>
                             </SheetHeader>
 
                             {/* Navigation */}
-                            <div className="flex-1 px-5 py-6">
-                                <p className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                            <div className="flex-1 overflow-y-auto bg-white px-4 py-5 sm:px-5 sm:py-6">
+                                <p className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
                                     Navigation
                                 </p>
 
@@ -164,16 +162,16 @@ export default function Navbar() {
                                                     setMobileOpen(false)
                                                 }
                                                 className={cn(
-                                                    "flex items-center justify-between rounded-2xl px-4 py-4 transition-all duration-200",
+                                                    "flex items-center justify-between rounded-xl px-4 py-3.5 transition-all duration-200 sm:rounded-2xl sm:py-4",
                                                     isActive
                                                         ? "bg-primary text-primary-foreground shadow-sm"
-                                                        : "hover:bg-muted"
+                                                        : "text-gray-800 hover:bg-gray-100"
                                                 )}
                                             >
-                                                <div className="flex items-center gap-4">
+                                                <div className="flex items-center gap-3 sm:gap-4">
                                                     <Icon className="h-5 w-5 shrink-0" />
 
-                                                    <span className="text-base font-semibold">
+                                                    <span className="text-sm font-semibold sm:text-base">
                                                         {item.label}
                                                     </span>
                                                 </div>
@@ -185,25 +183,7 @@ export default function Navbar() {
                                 </div>
                             </div>
 
-                            {/* Footer CTA */}
-                            <div className="border-t p-5">
-                                <Button
-                                    asChild
-                                    size="lg"
-                                    className="w-full rounded-xl"
-                                >
-                                    <Link
-                                        href="/properties"
-                                        onClick={() =>
-                                            setMobileOpen(false)
-                                        }
-                                    >
-                                        Browse Properties
 
-                                        <ArrowRight className="ml-2 h-4 w-4" />
-                                    </Link>
-                                </Button>
-                            </div>
                         </SheetContent>
                     </Sheet>
                 </div>

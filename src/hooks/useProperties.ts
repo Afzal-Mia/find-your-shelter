@@ -1,7 +1,7 @@
 //@src/hooks/useProperties.ts
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import {
     getProperties,
     PropertyFilters,
@@ -10,14 +10,9 @@ import { QUERY_KEYS } from "@/constants/queryKeys";
 
 export function useProperties(filters: PropertyFilters) {
     return useQuery({
-        queryKey: [
-            QUERY_KEYS.properties,
-            filters.page,
-            filters.limit,
-            filters.search,
-            filters.type,
-            filters.status,
-        ],
+        queryKey: [QUERY_KEYS.properties, filters],
         queryFn: () => getProperties(filters),
+        staleTime: 1000 * 60 * 10,
+        placeholderData: keepPreviousData,
     });
 }

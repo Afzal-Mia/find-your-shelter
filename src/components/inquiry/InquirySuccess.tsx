@@ -32,7 +32,7 @@ export default function InquirySuccess({
             transition={{
                 duration: 0.45,
             }}
-            className="rounded-3xl border bg-card p-10 text-center shadow-sm"
+            className="rounded-2xl border bg-card p-6 text-center shadow-sm sm:rounded-3xl sm:p-8 lg:p-10"
         >
             <motion.div
                 initial={{
@@ -48,23 +48,27 @@ export default function InquirySuccess({
                     stiffness: 180,
                     damping: 14,
                 }}
-                className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-emerald-100"
+                className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-emerald-100 sm:h-24 sm:w-24"
             >
-                <CheckCircle2 className="h-12 w-12 text-emerald-600" />
+                <CheckCircle2 className="h-10 w-10 text-emerald-600 sm:h-12 sm:w-12" />
             </motion.div>
 
-            <h2 className="mt-8 text-3xl font-bold">
+            <h2 className="mt-6 text-2xl font-bold sm:mt-8 sm:text-3xl">
                 Thank You!
             </h2>
 
-            <p className="mx-auto mt-4 max-w-md leading-7 text-muted-foreground">
+            <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-muted-foreground sm:mt-4 sm:text-base">
                 {propertyId
                     ? "Your inquiry has been submitted successfully. Our team will contact you soon regarding this property."
                     : "Your message has been sent successfully. Our team will get back to you as soon as possible."}
             </p>
 
-            <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
-                <Button asChild size="lg">
+            <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:justify-center sm:gap-4">
+                <Button
+                    asChild
+                    size="lg"
+                    className="w-full sm:w-auto"
+                >
                     <Link href="/properties">
                         <Home className="mr-2 h-4 w-4" />
                         Browse Properties
@@ -75,6 +79,7 @@ export default function InquirySuccess({
                     variant="outline"
                     size="lg"
                     asChild
+                    className="w-full sm:w-auto"
                 >
                     <Link href="/">
                         Back to Home

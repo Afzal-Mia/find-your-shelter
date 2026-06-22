@@ -10,5 +10,6 @@ export function useProperty(id: string) {
         queryKey: [QUERY_KEYS.property, id],
         queryFn: () => getProperty(id),
         enabled: !!id,
+        staleTime: 1000 * 60 * 5, // 5 min
     });
 }

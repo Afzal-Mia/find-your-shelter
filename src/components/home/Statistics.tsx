@@ -1,4 +1,5 @@
 "use client";
+
 import {
     Building2,
     Users,
@@ -54,27 +55,28 @@ const STATS = [
 
 export default function Statistics() {
     return (
-        <section className="bg-slate-50 py-24">
-            <div className="container mx-auto max-w-7xl px-6">
+        <section className="bg-slate-50 py-14 sm:py-16 lg:py-24">
+            <div className="container mx-auto max-w-7xl px-4 sm:px-6">
                 {/* Section Heading */}
                 <div className="mx-auto max-w-3xl text-center">
-                    <span className="inline-flex rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
+                    <span className="inline-flex rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary sm:px-4 sm:py-2 sm:text-sm">
                         Our Impact
                     </span>
 
-                    <h2 className="mt-5 text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+                    <h2 className="mt-4 text-2xl font-bold tracking-tight text-foreground sm:mt-5 sm:text-3xl lg:text-4xl xl:text-5xl">
                         Numbers That Build Trust
                     </h2>
 
-                    <p className="mt-5 text-lg leading-8 text-muted-foreground">
-                        Thousands of renters have trusted Find Your Shelter to discover
-                        verified homes. Our growing community reflects our commitment to
-                        quality, transparency, and a seamless rental experience.
+                    <p className="mt-4 text-sm leading-7 text-muted-foreground sm:mt-5 sm:text-base lg:text-lg lg:leading-8">
+                        Thousands of renters have trusted Find Your Shelter to
+                        discover verified homes. Our growing community reflects
+                        our commitment to quality, transparency, and a seamless
+                        rental experience.
                     </p>
                 </div>
 
                 {/* Statistics Grid */}
-                <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+                <div className="mt-10 grid grid-cols-1 gap-5 sm:mt-12 sm:grid-cols-2 sm:gap-6 xl:mt-16 xl:grid-cols-4">
                     {STATS.map((stat) => (
                         <StatisticCard
                             key={stat.title}

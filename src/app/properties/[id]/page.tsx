@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { SearchX } from "lucide-react";
 
 import { useProperty } from "@/hooks/useProperty";
+
 import BackButton from "@/components/common/BackButton";
 
 import PropertyGallery from "@/components/property/PropertyGallery";
@@ -37,7 +38,7 @@ export default function PropertyDetailsPage() {
 
     if (isError) {
         return (
-            <main className="container mx-auto max-w-7xl px-6 py-20">
+            <main className="container mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
                 <ErrorState
                     title="Failed to Load Property"
                     description="We couldn't load the property details. Please check your internet connection and try again."
@@ -49,7 +50,7 @@ export default function PropertyDetailsPage() {
 
     if (!data?.property) {
         return (
-            <main className="container mx-auto max-w-7xl px-6 py-20">
+            <main className="container mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
                 <EmptyState
                     icon={SearchX}
                     title="Property Not Found"
@@ -62,49 +63,56 @@ export default function PropertyDetailsPage() {
     const property = data.property;
 
     return (
-        <main className="pb-20">
-
+        <main className="pb-12 sm:pb-16 lg:pb-20">
             {/* Hero Gallery */}
-            <section className="container mx-auto max-w-7xl px-6 pt-10">
+
+            <section className="container mx-auto max-w-7xl px-4 pt-4 sm:px-6 sm:pt-6 lg:px-8 lg:pt-10">
                 <BackButton label="Back to Properties" />
 
-                <PropertyGallery property={property} />
+                <div className="mt-4 sm:mt-6">
+                    <PropertyGallery property={property} />
+                </div>
             </section>
 
             {/* Summary */}
-            <section className="container mx-auto max-w-7xl px-6">
+
+            <section className="container mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
                 <PropertySummary property={property} />
             </section>
 
             {/* Booking Progress */}
+
             {property.allowRoomBooking && (
-                <section className="container mx-auto mt-10 max-w-7xl px-6">
+                <section className="container mx-auto max-w-7xl px-4 pb-6 sm:px-6 sm:pb-8 lg:px-8 lg:pb-10">
                     <PropertyBookingProgress property={property} />
                 </section>
             )}
 
             {/* Description */}
-            <section className="container mx-auto mt-10 max-w-7xl px-6">
+
+            <section className="container mx-auto max-w-7xl px-4 pb-6 sm:px-6 sm:pb-8 lg:px-8 lg:pb-10">
                 <PropertyDescription property={property} />
             </section>
 
             {/* Information */}
-            <section className="container mx-auto mt-10 max-w-7xl px-6">
+
+            <section className="container mx-auto max-w-7xl px-4 pb-6 sm:px-6 sm:pb-8 lg:px-8 lg:pb-10">
                 <PropertyInformation property={property} />
             </section>
 
             {/* Location */}
+
             {property.coordinates && (
-                <section className="container mx-auto mt-10 max-w-7xl px-6">
+                <section className="container mx-auto max-w-7xl px-4 pb-6 sm:px-6 sm:pb-8 lg:px-8 lg:pb-10">
                     <PropertyLocation property={property} />
                 </section>
             )}
 
             {/* Inquiry */}
-            <section className="container mx-auto mt-14 max-w-7xl px-6">
+
+            <section className="container mx-auto max-w-7xl px-4 pt-2 sm:px-6 sm:pt-4 lg:px-8 lg:pt-6">
                 <InquiryForm propertyId={property._id} />
             </section>
-
         </main>
     );
 }

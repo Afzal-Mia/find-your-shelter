@@ -20,41 +20,45 @@ export default function PropertyInformation({
     property,
 }: Props) {
     return (
-        <Card className="rounded-3xl shadow-sm">
-            <CardContent className="p-8">
+        <Card className="rounded-2xl shadow-sm sm:rounded-3xl">
+            <CardContent className="p-4 sm:p-6 lg:p-8">
+                {/* Header */}
 
-                <div className="mb-8">
-                    <h2 className="text-2xl font-bold">
+                <div className="mb-6 sm:mb-8">
+                    <h2 className="text-xl font-bold sm:text-2xl">
                         Property Information
                     </h2>
 
-                    <p className="mt-2 text-muted-foreground">
+                    <p className="mt-2 text-sm text-muted-foreground sm:text-base">
                         Complete information about this property.
                     </p>
                 </div>
 
-                <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                {/* Information Grid */}
 
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
                     {/* Property Type */}
+
                     <InfoCard
                         icon={
                             property.type === "flat" ? (
-                                <Building2 className="h-6 w-6 text-primary" />
+                                <Building2 className="h-5 w-5 text-primary sm:h-6 sm:w-6" />
                             ) : property.type === "villa" ? (
-                                <Landmark className="h-6 w-6 text-primary" />
+                                <Landmark className="h-5 w-5 text-primary sm:h-6 sm:w-6" />
                             ) : (
-                                <Home className="h-6 w-6 text-primary" />
+                                <Home className="h-5 w-5 text-primary sm:h-6 sm:w-6" />
                             )
                         }
                         label="Property Type"
                         value={property.type}
                     />
 
-                    {/* BHK */}
+                    {/* Configuration */}
+
                     {property.bhk !== undefined && (
                         <InfoCard
                             icon={
-                                <BedDouble className="h-6 w-6 text-primary" />
+                                <BedDouble className="h-5 w-5 text-primary sm:h-6 sm:w-6" />
                             }
                             label="Configuration"
                             value={`${property.bhk} BHK`}
@@ -62,10 +66,11 @@ export default function PropertyInformation({
                     )}
 
                     {/* Rent */}
+
                     {property.rent !== undefined && (
                         <InfoCard
                             icon={
-                                <IndianRupee className="h-6 w-6 text-primary" />
+                                <IndianRupee className="h-5 w-5 text-primary sm:h-6 sm:w-6" />
                             }
                             label="Monthly Rent"
                             value={`₹${property.rent.toLocaleString()}`}
@@ -73,9 +78,10 @@ export default function PropertyInformation({
                     )}
 
                     {/* Booking */}
+
                     <InfoCard
                         icon={
-                            <CheckCircle2 className="h-6 w-6 text-primary" />
+                            <CheckCircle2 className="h-5 w-5 text-primary sm:h-6 sm:w-6" />
                         }
                         label="Room Booking"
                         value={
@@ -86,10 +92,11 @@ export default function PropertyInformation({
                     />
 
                     {/* Status */}
+
                     {property.status && (
                         <InfoCard
                             icon={
-                                <CheckCircle2 className="h-6 w-6 text-primary" />
+                                <CheckCircle2 className="h-5 w-5 text-primary sm:h-6 sm:w-6" />
                             }
                             label="Status"
                             value={property.status
@@ -99,18 +106,19 @@ export default function PropertyInformation({
                     )}
 
                     {/* Coordinates */}
+
                     {property.coordinates && (
                         <InfoCard
-                            icon={<MapPin className="h-6 w-6 text-primary" />}
+                            icon={
+                                <MapPin className="h-5 w-5 text-primary sm:h-6 sm:w-6" />
+                            }
                             label="Coordinates"
                             value={`${property.coordinates.latitude.toFixed(
                                 4
                             )}, ${property.coordinates.longitude.toFixed(4)}`}
                         />
                     )}
-
                 </div>
-
             </CardContent>
         </Card>
     );
@@ -128,20 +136,18 @@ function InfoCard({
     value,
 }: InfoCardProps) {
     return (
-        <div className="rounded-2xl border bg-muted/30 p-5 transition-all duration-300 hover:border-primary/20 hover:bg-primary/5">
-
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+        <div className="rounded-xl border bg-muted/30 p-4 transition-all duration-300 hover:border-primary/20 hover:bg-primary/5 sm:rounded-2xl sm:p-5">
+            <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 sm:mb-4 sm:h-12 sm:w-12 sm:rounded-xl">
                 {icon}
             </div>
 
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs text-muted-foreground sm:text-sm">
                 {label}
             </p>
 
-            <h3 className="mt-2 text-lg font-semibold capitalize">
+            <h3 className="mt-2 break-words text-base font-semibold capitalize leading-snug sm:text-lg">
                 {value}
             </h3>
-
         </div>
     );
 }

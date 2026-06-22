@@ -144,15 +144,15 @@ export default function PropertyGallery({
 
             {/* Thumbnails */}
             {images.length > 1 && (
-                <div className="flex justify-center gap-3 overflow-x-auto pb-2">
+                <div className="flex justify-center gap-3 no-scrollbar overflow-x-auto  pb-2">
 
                     {images.map((image, index) => (
                         <button
                             key={image.publicId}
                             onClick={() => emblaApi?.scrollTo(index)}
                             className={`relative h-20 w-28 shrink-0 overflow-hidden rounded-xl border-2 transition-all ${selectedIndex === index
-                                    ? "border-primary"
-                                    : "border-transparent opacity-70 hover:opacity-100"
+                                ? "border-primary"
+                                : "border-transparent opacity-70 hover:opacity-100"
                                 }`}
                         >
                             <Image

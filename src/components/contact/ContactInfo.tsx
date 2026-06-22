@@ -13,94 +13,102 @@ export default function ContactInfo({
     email = "support@findyourshelter.com",
 }: ContactInfoProps) {
     return (
-        <section className="py-20">
-            <div className="container mx-auto max-w-7xl px-6">
-                <div className="mx-auto max-w-2xl text-center">
-                    <span className="rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
+        <section className="py-14 sm:py-16 lg:py-24">
+            <div className="container mx-auto max-w-7xl px-4 sm:px-6">
+                {/* Heading */}
+                <motion.div
+                    initial={{ opacity: 0, y: 25 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
+                    className="mx-auto max-w-3xl text-center"
+                >
+                    <span className="inline-flex rounded-full bg-primary/10 px-4 py-2 text-xs font-semibold text-primary sm:text-sm">
                         Contact Information
                     </span>
 
-                    <h2 className="mt-5 text-3xl font-bold sm:text-4xl">
+                    <h2 className="mt-5 text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
                         We're Always Happy to Help
                     </h2>
 
-                    <p className="mt-4 text-lg leading-8 text-muted-foreground">
+                    <p className="mt-4 text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
                         Choose the contact method that's most convenient for
                         you. Whether you call or email, we'll respond as soon
                         as possible.
                     </p>
-                </div>
+                </motion.div>
 
-                <div className="mt-14 grid gap-8 md:grid-cols-2">
-
+                {/* Contact Cards */}
+                <div className="mt-10 grid gap-6 sm:mt-14 lg:grid-cols-2 lg:gap-8">
                     {/* Phone */}
-
                     <motion.a
                         href={`tel:${phone.replace(/\s+/g, "")}`}
+                        initial={{ opacity: 0, y: 40 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5 }}
                         whileHover={{
                             y: -8,
+                            scale: 1.02,
                         }}
-                        transition={{
-                            duration: 0.25,
-                        }}
-                        className="group rounded-3xl border bg-card p-8 shadow-sm transition-all hover:border-primary/30 hover:shadow-xl"
+                        className="group rounded-2xl border bg-card p-6 shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-xl sm:rounded-3xl sm:p-8"
                     >
                         <div className="flex items-center justify-between">
-                            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                                <PhoneCall className="h-8 w-8" />
+                            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary sm:h-16 sm:w-16">
+                                <PhoneCall className="h-7 w-7 sm:h-8 sm:w-8" />
                             </div>
 
-                            <ArrowUpRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                            <ArrowUpRight className="h-5 w-5 text-muted-foreground transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
                         </div>
 
-                        <h3 className="mt-8 text-2xl font-semibold">
+                        <h3 className="mt-6 text-xl font-semibold sm:mt-8 sm:text-2xl">
                             Call Us
                         </h3>
 
-                        <p className="mt-3 leading-7 text-muted-foreground">
+                        <p className="mt-3 text-sm leading-7 text-muted-foreground sm:text-base">
                             Speak directly with our team for quick assistance
                             regarding available properties and bookings.
                         </p>
 
-                        <div className="mt-8 text-xl font-bold text-primary">
+                        <div className="mt-6 text-lg font-bold text-primary sm:mt-8 sm:text-2xl">
                             {phone}
                         </div>
                     </motion.a>
 
                     {/* Email */}
-
                     <motion.a
                         href={`mailto:${email}`}
+                        initial={{ opacity: 0, y: 40 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: 0.15 }}
                         whileHover={{
                             y: -8,
+                            scale: 1.02,
                         }}
-                        transition={{
-                            duration: 0.25,
-                        }}
-                        className="group rounded-3xl border bg-card p-8 shadow-sm transition-all hover:border-primary/30 hover:shadow-xl"
+                        className="group rounded-2xl border bg-card p-6 shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-xl sm:rounded-3xl sm:p-8"
                     >
                         <div className="flex items-center justify-between">
-                            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                                <Mail className="h-8 w-8" />
+                            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary sm:h-16 sm:w-16">
+                                <Mail className="h-7 w-7 sm:h-8 sm:w-8" />
                             </div>
 
-                            <ArrowUpRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                            <ArrowUpRight className="h-5 w-5 text-muted-foreground transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
                         </div>
 
-                        <h3 className="mt-8 text-2xl font-semibold">
+                        <h3 className="mt-6 text-xl font-semibold sm:mt-8 sm:text-2xl">
                             Email Us
                         </h3>
 
-                        <p className="mt-3 leading-7 text-muted-foreground">
+                        <p className="mt-3 text-sm leading-7 text-muted-foreground sm:text-base">
                             Send us your questions anytime and we'll get back
                             to you with the information you need.
                         </p>
 
-                        <div className="mt-8 break-all text-xl font-bold text-primary">
+                        <div className="mt-6 break-all text-lg font-bold text-primary sm:mt-8 sm:text-2xl">
                             {email}
                         </div>
                     </motion.a>
-
                 </div>
             </div>
         </section>

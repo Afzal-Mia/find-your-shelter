@@ -22,24 +22,26 @@ export default function Testimonials() {
 
     if (isLoading) {
         return (
-            <section className="bg-background py-24">
-                <div className="container mx-auto max-w-7xl px-6">
+            <section className="bg-background py-14 sm:py-16 lg:py-24">
+                <div className="container mx-auto max-w-7xl px-4 sm:px-6">
                     <div className="mx-auto max-w-3xl text-center">
-                        <span className="inline-flex items-center rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
+                        <span className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary sm:px-4 sm:py-2 sm:text-sm">
                             Testimonials
                         </span>
 
-                        <h2 className="mt-5 text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+                        <h2 className="mt-4 text-2xl font-bold tracking-tight sm:mt-5 sm:text-3xl lg:text-4xl xl:text-5xl">
                             What Our Customers Say
                         </h2>
 
-                        <p className="mt-5 text-lg text-muted-foreground">
-                            Hear from renters who found their perfect home through
-                            Find Your Shelter.
+                        <p className="mt-4 text-sm leading-7 text-muted-foreground sm:mt-5 sm:text-base lg:text-lg">
+                            Hear from renters who found their perfect home
+                            through Find Your Shelter.
                         </p>
                     </div>
 
-                    <TestimonialsSkeleton />
+                    <div className="mt-10 sm:mt-12 lg:mt-16">
+                        <TestimonialsSkeleton />
+                    </div>
                 </div>
             </section>
         );
@@ -47,8 +49,8 @@ export default function Testimonials() {
 
     if (isError) {
         return (
-            <section className="py-24">
-                <div className="container mx-auto max-w-7xl px-6">
+            <section className="py-14 sm:py-16 lg:py-24">
+                <div className="container mx-auto max-w-7xl px-4 sm:px-6">
                     <ErrorState
                         title="Failed to load testimonials"
                         description="Please try again."
@@ -111,22 +113,22 @@ export default function Testimonials() {
         reviews.length > 0 ? reviews : defaultReviews;
 
     return (
-        <section className="bg-background py-24">
-            <div className="container mx-auto max-w-7xl px-6">
+        <section className="bg-background py-14 sm:py-16 lg:py-24">
+            <div className="container mx-auto max-w-7xl px-4 sm:px-6">
                 {/* Heading */}
                 <div className="mx-auto max-w-3xl text-center">
-                    <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
+                    <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary sm:px-4 sm:py-2 sm:text-sm">
                         <MessageSquareQuote className="h-4 w-4" />
                         Testimonials
                     </span>
 
-                    <h2 className="mt-5 text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+                    <h2 className="mt-4 text-2xl font-bold tracking-tight sm:mt-5 sm:text-3xl lg:text-4xl xl:text-5xl">
                         What Our Customers Say
                     </h2>
 
-                    <p className="mt-5 text-lg leading-8 text-muted-foreground">
+                    <p className="mt-4 text-sm leading-7 text-muted-foreground sm:mt-5 sm:text-base lg:text-lg lg:leading-8">
                         Read genuine experiences from renters who trusted{" "}
-                        <span className="font-medium text-foreground">
+                        <span className="font-semibold text-foreground">
                             Find Your Shelter
                         </span>{" "}
                         to discover their next home.
@@ -134,7 +136,7 @@ export default function Testimonials() {
                 </div>
 
                 {/* Testimonials */}
-                <div className="mt-16 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                <div className="mt-10 grid grid-cols-1 gap-5 sm:mt-12 sm:grid-cols-2 sm:gap-6 xl:mt-16 xl:grid-cols-3">
                     {displayReviews.map((review) => (
                         <TestimonialCard
                             key={review._id}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 
 import {
     getProperties,
@@ -13,12 +13,7 @@ export function useInfiniteProperties(
     filters: Omit<PropertyFilters, "page">
 ) {
     return useInfiniteQuery({
-        queryKey: [
-            QUERY_KEYS.properties,
-            filters.search,
-            filters.type,
-            filters.status,
-        ],
+        queryKey: [QUERY_KEYS.properties, filters],
 
         initialPageParam: 1,
 
@@ -33,5 +28,6 @@ export function useInfiniteProperties(
                 ? lastPage.pagination.page + 1
                 : undefined;
         },
+        staleTime: 1000 * 60 * 10,//10 min
     });
 }

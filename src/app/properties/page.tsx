@@ -1,9 +1,9 @@
 "use client";
 
+import { useState } from "react";
+
 import { useInfiniteProperties } from "@/hooks/useInfiniteProperties";
 import { useDebounce } from "@/hooks/useDebounce";
-
-import { useState } from "react";
 
 import SearchFilters, {
     PropertyFilters,
@@ -56,18 +56,21 @@ export default function PropertiesPage() {
         data?.pages[0]?.pagination.total ?? 0;
 
     return (
-        <main className="py-20">
-            <div className="container mx-auto max-w-7xl px-6">
-                {/* Heading */}
-                <div className="mb-10 text-center">
-                    <h1 className="text-4xl font-bold">
+        <main className="py-8 sm:py-10 lg:py-14 xl:py-20">
+            <div className="container mx-auto max-w-7xl px-4 sm:px-6">
+                {/* Header */}
+                <div className="mb-8 text-center sm:mb-10 lg:mb-12">
+                    <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
                         Browse Properties
                     </h1>
 
-                    <p className="mt-3 text-muted-foreground">
-                        Find verified rental properties that suit your
-                        needs.
+                    <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base lg:text-lg">
+                        Explore verified flats, houses, and villas that
+                        match your budget and lifestyle. Use the filters
+                        below to quickly find your perfect rental home.
                     </p>
+
+
                 </div>
 
                 {/* Filters */}
@@ -77,18 +80,17 @@ export default function PropertiesPage() {
                 />
 
                 {/* Results */}
-                <div className="mt-10">
+                <div className="mt-8 sm:mt-10">
                     {isLoading ? (
-                        <PropertyGridSkeleton count={6} />
+                        <PropertyGridSkeleton count={10} />
                     ) : isError ? (
                         <ErrorState
                             title="Failed to load properties"
-                            description="Something went wrong. Please try again."
+                            description="Something went wrong while loading properties. Please try again."
                             onRetry={refetch}
                         />
-                    ) : properties.length ? (
-                        <>
-
+                    ) : properties.length > 0 ? (
+                        <div className="space-y-8 sm:space-y-10">
                             <PropertyGrid
                                 properties={properties}
                             />
@@ -98,11 +100,11 @@ export default function PropertiesPage() {
                                 isLoading={isFetchingNextPage}
                                 onLoadMore={() => fetchNextPage()}
                             />
-                        </>
+                        </div>
                     ) : (
                         <EmptyState
                             title="No Properties Found"
-                            description="Try changing your search or filters."
+                            description="Try changing your search keywords or filters to discover more properties."
                         />
                     )}
                 </div>

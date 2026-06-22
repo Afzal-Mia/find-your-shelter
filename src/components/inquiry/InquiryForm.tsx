@@ -82,32 +82,26 @@ export default function InquiryForm({
     }
 
     return (
-        <section className="overflow-hidden rounded-3xl border bg-card shadow-sm">
-
+        <section className="overflow-hidden rounded-2xl border bg-card shadow-sm sm:rounded-3xl">
             <div className="grid lg:grid-cols-2">
-
                 {/* LEFT */}
-
-                <div className="bg-primary/5 p-10">
-
-                    <div className="max-w-md">
-
-                        <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
-                            <Phone className="h-7 w-7 text-primary" />
+                <div className="bg-primary/5 p-5 sm:p-6 lg:p-10">
+                    <div className="mx-auto max-w-md">
+                        <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 sm:h-14 sm:w-14">
+                            <Phone className="h-6 w-6 text-primary sm:h-7 sm:w-7" />
                         </div>
 
-                        <h2 className="text-3xl font-bold">
+                        <h2 className="text-2xl font-bold leading-tight sm:text-3xl">
                             Interested in this property?
                         </h2>
 
-                        <p className="mt-4 leading-7 text-muted-foreground">
-                            Fill in your details and our team will
-                            contact you shortly to answer your
-                            questions or schedule a property visit.
+                        <p className="mt-3 text-sm leading-7 text-muted-foreground sm:mt-4 sm:text-base">
+                            Fill in your details and our team will contact you
+                            shortly to answer your questions or schedule a
+                            property visit.
                         </p>
 
-                        <div className="mt-10 space-y-5">
-
+                        <div className="mt-8 space-y-5 sm:mt-10">
                             <Feature
                                 icon={<Clock3 className="h-5 w-5" />}
                                 title="Quick Response"
@@ -125,35 +119,26 @@ export default function InquiryForm({
                                 title="Schedule a Visit"
                                 description="Book a property visit at your convenience."
                             />
-
                         </div>
-
                     </div>
-
                 </div>
 
                 {/* RIGHT */}
-
-                <div className="p-10">
-
-                    <h3 className="text-2xl font-semibold">
+                <div className="border-t p-5 sm:p-6 lg:border-l lg:border-t-0 lg:p-10">
+                    <h3 className="text-xl font-semibold sm:text-2xl">
                         Send Inquiry
                     </h3>
 
-                    <p className="mt-2 text-muted-foreground">
+                    <p className="mt-2 text-sm text-muted-foreground sm:text-base">
                         Complete the form below.
                     </p>
 
                     <form
                         onSubmit={handleSubmit(onSubmit)}
-                        className="mt-8 space-y-6"
+                        className="mt-6 space-y-5 sm:mt-8 sm:space-y-6"
                     >
-
                         <div className="space-y-2">
-
-                            <Label htmlFor="name">
-                                Full Name
-                            </Label>
+                            <Label htmlFor="name">Full Name</Label>
 
                             <Input
                                 id="name"
@@ -166,13 +151,10 @@ export default function InquiryForm({
                                     {errors.name.message}
                                 </p>
                             )}
-
                         </div>
 
-                        <div className="grid gap-6 md:grid-cols-2">
-
+                        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6">
                             <div className="space-y-2">
-
                                 <Label htmlFor="email">
                                     Email
                                 </Label>
@@ -189,11 +171,9 @@ export default function InquiryForm({
                                         {errors.email.message}
                                     </p>
                                 )}
-
                             </div>
 
                             <div className="space-y-2">
-
                                 <Label htmlFor="phone">
                                     Phone Number
                                 </Label>
@@ -209,9 +189,7 @@ export default function InquiryForm({
                                         {errors.phone.message}
                                     </p>
                                 )}
-
                             </div>
-
                         </div>
 
                         <div className="space-y-2">
@@ -228,7 +206,8 @@ export default function InquiryForm({
                             />
 
                             <p className="text-xs text-muted-foreground">
-                                You can keep the default message or edit it before submitting.
+                                You can keep the default message or edit it before
+                                submitting.
                             </p>
 
                             {errors.message && (
@@ -241,7 +220,7 @@ export default function InquiryForm({
                         <Button
                             type="submit"
                             size="lg"
-                            className="w-full"
+                            className="h-11 w-full sm:h-12"
                             disabled={mutation.isPending}
                         >
                             {mutation.isPending ? (
@@ -256,13 +235,9 @@ export default function InquiryForm({
                                 </>
                             )}
                         </Button>
-
                     </form>
-
                 </div>
-
             </div>
-
         </section>
     );
 }
