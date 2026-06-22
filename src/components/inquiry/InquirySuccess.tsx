@@ -10,7 +10,13 @@ import {
 
 import { Button } from "@/components/ui/button";
 
-export default function InquirySuccess() {
+interface Props {
+    propertyId?: string;
+}
+
+export default function InquirySuccess({
+    propertyId,
+}: Props) {
     return (
         <motion.div
             initial={{
@@ -28,7 +34,6 @@ export default function InquirySuccess() {
             }}
             className="rounded-3xl border bg-card p-10 text-center shadow-sm"
         >
-            {/* Animated Success Icon */}
             <motion.div
                 initial={{
                     scale: 0,
@@ -53,14 +58,16 @@ export default function InquirySuccess() {
             </h2>
 
             <p className="mx-auto mt-4 max-w-md leading-7 text-muted-foreground">
-                Your inquiry has been submitted successfully. Our team will contact you soon regarding this property.
+                {propertyId
+                    ? "Your inquiry has been submitted successfully. Our team will contact you soon regarding this property."
+                    : "Your message has been sent successfully. Our team will get back to you as soon as possible."}
             </p>
 
             <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
                 <Button asChild size="lg">
                     <Link href="/properties">
                         <Home className="mr-2 h-4 w-4" />
-                        Browse More Properties
+                        Browse Properties
                     </Link>
                 </Button>
 

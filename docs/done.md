@@ -379,3 +379,12 @@ src/components/common/NotFound.tsx
 src/app/not-found.tsx
 
 src/components/common/BackButton.tsx
+src/components/about/AboutHero.tsx
+src/components/about/CompanyStory.tsx
+src/components/about/MissionVision.tsx
+src/components/about/WorkProcess.tsx
+src/components/about/AboutCTA.tsx
+src/app/about/page.tsx
+src/app/contact/page.tsx
+
+src/components/contact/ContactInfo.tsx

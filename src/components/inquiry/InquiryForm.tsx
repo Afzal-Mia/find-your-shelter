@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Textarea } from "@/components/ui/textarea";
 import toast from "react-hot-toast";
 
 import {
@@ -20,13 +21,12 @@ import { useInquiry } from "@/hooks/useInquiry";
 import InquirySuccess from "./InquirySuccess";
 
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { inquiryCreateSchema } from "@/app/api/inquiry/inquiry.validation";
 
 interface Props {
-    propertyId: string;
+    propertyId?: string;
 }
 
 export default function InquiryForm({
@@ -47,7 +47,7 @@ export default function InquiryForm({
             name: "",
             email: "",
             phone: "",
-            message: "",
+            message: "Hello, I'm interested in knowing more about your rental properties. Please contact me at your earliest convenience.",
             propertyId,
         },
     });
@@ -63,7 +63,7 @@ export default function InquiryForm({
                     name: "",
                     email: "",
                     phone: "",
-                    message: "",
+                    message: "Hello, I'm interested in knowing more about your rental properties. Please contact me at your earliest convenience.",
                     propertyId,
                 });
             },
@@ -78,7 +78,7 @@ export default function InquiryForm({
     }
 
     if (submitted) {
-        return <InquirySuccess />;
+        return <InquirySuccess propertyId={propertyId} />;
     }
 
     return (
@@ -215,7 +215,6 @@ export default function InquiryForm({
                         </div>
 
                         <div className="space-y-2">
-
                             <Label htmlFor="message">
                                 Message
                             </Label>
@@ -223,16 +222,20 @@ export default function InquiryForm({
                             <Textarea
                                 id="message"
                                 rows={6}
-                                placeholder="I'm interested in this property. Please contact me."
+                                placeholder="Write your message..."
                                 {...register("message")}
+                                className="resize-none"
                             />
+
+                            <p className="text-xs text-muted-foreground">
+                                You can keep the default message or edit it before submitting.
+                            </p>
 
                             {errors.message && (
                                 <p className="text-sm text-destructive">
                                     {errors.message.message}
                                 </p>
                             )}
-
                         </div>
 
                         <Button
