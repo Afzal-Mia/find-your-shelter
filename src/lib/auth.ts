@@ -85,7 +85,7 @@ export function setAuthCookies(response: NextResponse, accessToken: string, refr
     value: accessToken,
     httpOnly: true,
     secure: isProduction,
-    sameSite: 'strict',
+    sameSite: isProduction ? 'none' : 'lax',
     maxAge: 60 * 15, // 15 minutes
     path: '/',
   });
@@ -96,7 +96,7 @@ export function setAuthCookies(response: NextResponse, accessToken: string, refr
     value: refreshToken,
     httpOnly: true,
     secure: isProduction,
-    sameSite: 'strict',
+    sameSite: isProduction ? 'none' : 'lax',
     maxAge: 60 * 60 * 24 * 7, // 7 days
     path: '/',
   });
