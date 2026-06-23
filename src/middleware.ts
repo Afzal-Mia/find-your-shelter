@@ -4,10 +4,11 @@ import type { NextRequest } from "next/server";
 export function middleware(request: NextRequest) {
   const origin = request.headers.get("origin");
 
-  // Allowed origins
-  const allowedOrigins = [
-    process.env.CROSS_ORIGIN,
-  ].filter(Boolean) as string[];
+  // Allowed origins (handles comma-separated string)
+  const allowedOrigins = (process.env.CROSS_ORIGIN || "")
+    .split(",")
+    .map(o => o.trim())
+    .filter(Boolean);
 
   const isAllowedOrigin = !!origin && allowedOrigins.includes(origin);
 
