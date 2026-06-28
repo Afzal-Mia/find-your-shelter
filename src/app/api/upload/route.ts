@@ -19,14 +19,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'No file found in request' }, { status: 400 });
     }
 
-    const MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
+    const MAX_SIZE_BYTES = 1 * 1024 * 1024; // 1 MB
     if (file.size > MAX_SIZE_BYTES) {
-      return NextResponse.json({ message: 'File size exceeds 5MB limit' }, { status: 400 });
+      return NextResponse.json({ message: 'File size exceeds 1MB limit' }, { status: 400 });
     }
 
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    
+
     console.log(`[Upload] Processing ${file.name} - Size: ${(buffer.length / 1024 / 1024).toFixed(2)} MB`);
 
     const os = require('os');
@@ -62,7 +62,7 @@ export async function POST(request: Request) {
       );
     } catch (error: any) {
       // Ensure temp file is cleaned up even if upload fails
-      await fs.unlink(tempFilePath).catch(() => {});
+      await fs.unlink(tempFilePath).catch(() => { });
       throw error;
     }
   } catch (error: any) {

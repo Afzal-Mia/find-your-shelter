@@ -79,7 +79,7 @@ export default function SearchFilters({
                                 <SelectValue />
                             </SelectTrigger>
 
-                            <SelectContent>
+                            <SelectContent className="bg-card border-border shadow-xl">
                                 <SelectItem value="all">All Types</SelectItem>
                                 <SelectItem value="flat">Flat</SelectItem>
                                 <SelectItem value="house">House</SelectItem>
