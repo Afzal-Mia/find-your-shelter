@@ -28,7 +28,7 @@ export default function PropertyGallery({
             ? property.propertyImages
             : [
                 {
-                    url: "/images/no-image.jpg",
+                    url: "/images/no-image.png",
                     publicId: "fallback",
                 },
             ];

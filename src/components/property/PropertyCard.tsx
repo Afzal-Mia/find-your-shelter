@@ -35,7 +35,7 @@ export default function PropertyCard({
 }: PropertyCardProps) {
     const image =
         property.propertyImages?.[0]?.url ??
-        "/images/no-image.jpg";
+        "/images/no-image.png";
 
     const statusText =
         property.status
